@@ -1,0 +1,59 @@
+# 系统文件
+.DS_Store
+Thumbs.db
+*.pyc
+__pycache__/
+*.swp
+
+# 虚拟环境
+env/
+venv/
+ENV/
+.venv/
+virtualenv/
+
+# 数据库文件
+db.sqlite3
+*.sqlite3
+
+# 环境变量和敏感配置
+.env
+.env.*
+!.env.example
+secrets.json
+settings/local.py
+
+# 日志文件
+logs/
+*.log
+
+# 静态文件和媒体文件（根据实际情况调整）
+staticfiles/
+media/
+
+# 缓存和会话
+cache/
+sessions/
+
+# Django 生成的文件
+*.pot
+*.mo
+docs/_build/
+migrations/*
+!migrations/__init__.py  # 保留__init__.py文件
+
+# 临时文件
+*.bak
+*.orig
+*.tmp
+
+# IDE和编辑器配置
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# 测试报告
+htmlcov/
+.coverage
+.tox/
