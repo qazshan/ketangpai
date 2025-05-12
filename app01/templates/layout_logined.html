@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {%  block title %}{% endblock %}
+    {#    <title>Title</title>#}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+</head>
+<body>
+{#ctrl + alt + i 调整格式 #}
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <img src="{% static 'img/logo_blue.png' %}" alt="" height="30" style="margin-left: 10%;">
+            </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav" style="margin-left: 5%">
+      <ul class="navbar-nav">
+       {% block navbar %} {% endblock %}
+      </ul>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarNav" style="margin-left: 40%">
+        <ul class="navbar-nav" style="">
+             <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            个人中心
+          </a>
+          <ul class="dropdown-menu" style="">
+            <li><a class="dropdown-item" href="#">开通VIP</a></li>
+            <li><a class="dropdown-item" href="#">个人设置</a></li>
+            <li><a class="dropdown-item" href="/login/">退出登录</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled">{{ user.name }}</a>
+        </li>
+        </ul>
+    </div>
+  </div>
+</nav>
+{% block content %}{% endblock %}
+{% block js %}{% endblock %}
+{#<script src="{% static 'js/bootstrap.bundle.js' %}"></script>#}
+{#<script src="{% static 'css/bootstrap.min.css' %}"></script>#}
+</body>
+</html>

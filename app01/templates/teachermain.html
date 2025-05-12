@@ -1,0 +1,33 @@
+{% extends 'layout_logined.html' %}
+{% load static %}
+{% block title %}
+<title>课堂派-教师端</title>
+{% endblock %}
+{% block navbar %}
+     <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">我的课堂</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">备课区</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">虚拟教研室</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled">其他</a>
+        </li>
+ {% endblock %}
+{% block content %}
+{#<button onclick="window.location.href='/create_course/{{ user.account }}'">创建课程</button>#}
+    <form  method="post" class="bg-white p-8 rounded shadow-md">
+            {% csrf_token %}
+            <button type="submit" class="bg-blue-500 p-2 rounded hover:bg-blue-600" >创建课程</button>
+        </form>
+
+
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+    <script src="{% static 'css/bootstrap.min.css' %}"></script>
+{% endblock %}

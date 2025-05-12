@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+    <main class="container bg-white p-3 rounded" style="display: flex;align-items: center">
+        <div style="display: inline-block; width: 60%;margin-left: 2%;margin-top: 2%;">
+            <img src="{% static 'img/newbg.png' %}" style="width: 100%; height: auto" >
+        </div>
+        <div class="m-auto" style="width: 32%; display: inline-block; ">
+            <h1>登录</h1>
+            {#优化 选择登录方式#}
+            {#        <ul data-v-752f447a="" class="tabs-nav">#}
+            {#            <li data-v-752f447a="" class="item activeLogin">账号登录 <i data-v-752f447a="" class="line" style="background-color: rgb(66, 133, 244);"></i></li>#}
+            {#            <li data-v-752f447a="" class="item">手机短信登录 <i data-v-752f447a="" class="line" style="background-color: rgb(66, 133, 244);"></i></li>#}
+            {#            <li data-v-752f447a="" class="item"> 微信登录 <i data-v-752f447a="" class="line" style="background-color: rgb(66, 133, 244);"></i></li>#}
+            {#        </ul>#}
+            <form class="mt-3" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">账号</label>
+                    <input name="account" placeholder="请输入账号" class='form-control' style="height: 50px">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">密码</label>
+                    <input type="password" name="password" placeholder="请输入密码" class='form-control' style="height: 50px">
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" name='remember' value="1" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">记住我</label>
+                </div>
+                <div class='mb-3'>
+                    <button class='btn btn-primary w-100' type="submit">登录</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+{% endblock %}

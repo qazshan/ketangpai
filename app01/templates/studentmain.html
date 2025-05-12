@@ -1,0 +1,147 @@
+{% extends 'layout_logined.html' %}
+{% load static %}
+{% block title %}
+    <title>课堂派-学生端</title>
+    <style>
+        /* 隐藏初始的表单 */
+        #form-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+    </style>
+{% endblock %}
+{% block navbar %}
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="#">我的课堂</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">学生广场</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link disabled">其他</a>
+    </li>
+{% endblock %}
+{% block content %}
+    {#    使用弹窗 输入课程id后提交即可加入课堂#}
+    <button id="show-form-btn">添加课程</button>
+
+    <div id="form-popup">
+        <form id="my-form" method="post" action="">
+            {% csrf_token %}
+            <label for="name">课程ID:</label>
+            <input type="text" id="name" name="course_id" required>
+            <br>
+            <button type="submit" >提交</button>
+            <button type="button" id="cancel-btn">取消</button>
+        </form>
+    </div>
+    {#    展示学生的课程列表#}
+    {#    在 Bootstrap中，col类默认将一行等分为12份，如果想一行放4个 div，那么每个 div 应该占据 3 份，即使用col-3类 #}
+    <div class="container overflow-hidden text-center" style="border: #0f5132 solid 2px; width: 80%">
+        {#        <div> </div>#}
+        <div class="row gy-5" style="border: red solid 0px" >
+            {% for obj in courses %}
+                   <div class="col-4" style="border: #0dcaf0 solid 2px">
+                    <div class="card" style="width: 94%; ">
+                        <a href="{% url 'course_detail_student' obj.id %}" style="text-decoration: none; text-align: left; color:#eee;margin-bottom: 0; pointer-events: none;">
+                        <div style="pointer-events: auto; background-image: url('//assets.ketangpai.com/theme/min/01.jpg'); background-size: cover; opacity: 0.8;">
+                            <p style="margin-left: 6%;padding-top:2% ">{{ obj.get_year_display }}学年第{{ obj.term }}学期</p>
+                            <h3 style="margin-left: 8%">{{ obj.name }}</h3>
+                            <p style="margin-left: 6%;margin-bottom: 2%;">{{ obj.course_class }}</p>
+                            <p style="padding-bottom: 2%;margin-left: 6%">课堂码：{{ obj.id }}</p>
+                        </div>
+                            </a>
+                        <div class="card-body" style="color: #888; text-align: left;display: inline-block">
+{#                            老师的姓名导入#}
+                            <h5 class="card-title" style="padding-top: 0;margin-top: -5%;display: inline-block">负责人：</h5>
+{#                            以后实现置顶/取消置顶及更多 以下两个元素均为div+js实现 #}
+{#                            <a class="card-text" style="display: inline-block">置顶</a>#}
+{#                            <span>更多</span>#}
+                        </div>
+                    </div>
+
+            </div>
+                {% endfor %}
+            <div class="col-4" style="border: #0dcaf0 solid 2px">
+                    <div class="card" style="width: 94%; ">
+                        <a href="#" style="text-decoration: none; text-align: left; color:#eee;margin-bottom: 0; pointer-events: none;">
+                        <div style="pointer-events: auto; background-image: url('//assets.ketangpai.com/theme/min/01.jpg'); background-size: cover; opacity: 0.8;">
+                            <p style="margin-left: 6%;padding-top:2% ">2024-2025学年第2学期</p>
+                            <h3 style="margin-left: 8%">开源软件杯</h3>
+                            <p style="margin-left: 6%;margin-bottom: 2%;">班级</p>
+                            <p style="padding-bottom: 2%;margin-left: 6%">课堂码：1</p>
+                        </div>
+                            </a>
+                        <div class="card-body" style="color: #888; text-align: left;display: inline-block">
+                            <h5 class="card-title" style="padding-top: 0;margin-top: -5%;display: inline-block">主讲：张扬</h5>
+{#                            以后实现置顶/取消置顶及更多 以下两个元素均为div+js实现 #}
+{#                            <a class="card-text" style="display: inline-block">置顶</a>#}
+{#                            <span>更多</span>#}
+                        </div>
+                    </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+    {#    分割#}
+    <script>
+        const showFormBtn = document.getElementById('show-form-btn');
+        const formPopup = document.getElementById('form-popup');
+        const cancelBtn = document.getElementById('cancel-btn');
+
+        // 显示弹窗
+        showFormBtn.addEventListener('click', () => {
+            formPopup.style.display = 'block';
+        });
+
+        // 取消按钮点击事件，隐藏弹窗
+        cancelBtn.addEventListener('click', () => {
+            formPopup.style.display = 'none';
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            const showFormBtn = document.getElementById('show-form-btn');
+            const formPopup = document.getElementById('form-popup');
+            const myForm = document.getElementById('my-form');
+
+            showFormBtn.addEventListener('click', function () {
+                formPopup.style.display = 'block';
+            });
+
+            myForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                // 这里可以使用 fetch API 发送 POST 请求
+                const formData = new FormData(myForm);
+                fetch('', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        // 处理后端返回的数据
+                        console.log(data);
+                        // 提交成功后可以隐藏表单框
+                        formPopup.style.display = 'none';
+                    })
+                    .catch(error => {
+                        console.error('提交表单时出错:', error);
+                    });
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+    <script src="{% static 'css/bootstrap.min.css' %}"></script>
+{% endblock %}

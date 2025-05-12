@@ -1,0 +1,138 @@
+{% extends 'layout_logined.html' %}
+{% load static %}
+
+{% block title %}
+    <title>课堂派-查看课程</title>
+{% endblock %}
+
+{% block content %}
+    {#    展示具体谋课程的信息#}
+    {#    在 Bootstrap中，col类默认将一行等分为12份，如果想一行放4个 div，那么每个 div 应该占据 3 份，即使用col-3类 #}
+    <div class="container overflow-hidden text-center" style="border: #0f5132 solid 2px; width: 80%">
+        {#        <div> </div>#}
+        <div class="row gy-5" style="border: red solid 0px" >
+
+            <div class="card" style="width: 100%;background-image: url('//assets.ketangpai.com/theme/min/01.jpg'); background-size: cover; opacity: 0.8; ">
+                <h1 style="margin-left: 2%;margin-top: 2%; text-align: left; color: white">{{ course.name }}</h1>
+                <p style="margin-left: 2%; text-align: left; color: white;font-size: large"> {{ course.course_class }}</p>
+                <div style="text-align: left">
+                    <p style="display: inline-block;margin-left: 2%;margin-top: 4%; text-align: left; color: white;font-size: large; width: 16%">课程码：{{ course.id }}</p>
+                    <a href="#" style="display: inline-block;margin-left: 2%;text-decoration: none; color: white;font-size: large;width: 20%">已有60人加入</a>
+
+                </div>
+            </div>
+            <div class="card-body" style="color: #eee; text-align: left;margin-top:3%;display: inline-block;">
+                {#                            <h5 class="card-title" style="padding-top: 0;margin-top: -5%;display: inline-block">负责人：</h5>#}
+                <ul class="nav nav-tabs" id="myTab" role="tablist" style="font-size: x-large">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="choice1-tab" data-bs-toggle="tab" data-bs-target="#choice1-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">课程学习</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="choice2-tab" data-bs-toggle="tab" data-bs-target="#choice2-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">学情分析</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="choice3-tab" data-bs-toggle="tab" data-bs-target="#choice3-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">成绩管理</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="choice4-tab" data-bs-toggle="tab" data-bs-target="#choice4-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">课程介绍</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>其它</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="choice1-tab-pane" role="tabpanel" aria-labelledby="choice1-tab" tabindex="0">
+                        1
+                        <div>
+                            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                                <div class="container-fluid">
+
+                                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                        <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="font-size: large">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" aria-current="page" href="#">目录</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#">互动课件</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#">作业</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#">测试</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#">腾讯会议</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#">公告</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#">话题</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#">互动答题</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link disabled">Disabled</a>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="choice2-tab-pane" role="tabpanel" aria-labelledby="choice2-tab" tabindex="0">2</div>
+                    <div class="tab-pane fade" id="choice3-tab-pane" role="tabpanel" aria-labelledby="choice3-tab" tabindex="0">3</div>
+                    <div class="tab-pane fade" id="choice4-tab-pane" role="tabpanel" aria-labelledby="choice4-tab" tabindex="0">4</div>
+                    <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">5</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#    分割#}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取所有导航链接
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            // 为每个导航链接添加点击事件监听器
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // 阻止默认跳转行为
+                    e.preventDefault();
+
+                    // 如果是禁用状态，则不执行任何操作
+                    if (this.classList.contains('disabled')) return;
+
+                    // 移除所有导航链接的 active 类
+                    navLinks.forEach(l => l.classList.remove('active'));
+
+                    // 为当前点击的链接添加 active 类
+                    this.classList.add('active');
+
+                    // 在这里可以添加页面内容切换的逻辑
+                    // 例如：根据链接的 href 属性加载不同的内容
+                    const target = this.getAttribute('href');
+                    if (target && target !== '#') {
+                        loadContent(target); // 自定义函数，用于加载内容
+                    }
+                });
+            });
+
+            // 示例：内容加载函数（需要根据实际需求实现）
+            function loadContent(url) {
+                console.log(`Loading content from: ${url}`);
+                // 这里可以使用 fetch API 或其他方法加载内容
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+    <script src="{% static 'css/bootstrap.min.css' %}"></script>
+{% endblock %}

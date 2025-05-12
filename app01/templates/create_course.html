@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body>
+<form style="width: 60%; margin-left: 20%" method="post">
+    {% csrf_token %}
+    <div class="p-3 py-4 mb-2 bg-light rounded"> 创建课程
+    </div>
+    <div class="mb-3">
+        <label for="course_name" class="form-label">课程名称</label>
+        {#      设为必填项 未填写则在提交是旁边出现红色提示#}
+        <input type="text" class="form-control" id="course_name" name="name">
+    </div>
+    <div class="mb-3">
+        <label for="course_class" class="form-label">教学班级</label>
+        <input type="text" class="form-control" id="course_class" name="course_class">
+    </div>
+    <div class="mb-3" style="display: inline-block;">
+        <label for="course_term" class="form-label" style="display: block">学年学期</label>
+        <select class="form-select form-select-sm" aria-label=".form-select-sm example" style="display: inline-block; width: 200%" name="year">
+            <option selected>请选择学年</option>
+            <option value="1">2026-2027</option>
+            <option value="2">2025-2026</option>
+            <option value="3">2024-2025</option>
+            <option value="4">2023-2024</option>
+        </select>
+
+        <select class="form-select form-select-sm" aria-label=".form-select-sm example" style="display: inline-block; width: 200%; margin-top: 2%" name="term">
+            <option selected>请选择学期</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+    </div>
+
+    {#    <div class="mb-3 form-check">#}
+    {#        <input type="checkbox" class="form-check-input" id="exampleCheck1">#}
+    {#        <label class="form-check-label" for="exampleCheck1">Check me out</label>#}
+    {#    </div>#}
+    <div class="form-check mb-3">
+{#身份。radio-group 优化修改：添加图标#}
+                <div style="display: inline-block">
+                    <input type="radio" id="m1" name="mode" value="1" class="form-radio h-5 w-5 text-blue-600">
+                    <label for="m1" class="ml-2 text-gray-700">混合模式</label>
+                </div>
+                <div style="display: inline-block">
+                    <input type="radio" id="m2" name="mode" value="2" class="form-radio h-5 w-5 text-blue-600">
+                    <label for="m2" class="ml-2 text-gray-700">线上课程</label>
+                </div>
+        <div style="display: inline-block">
+                    <input type="radio" id="m3" name="mode" value="3" class="form-radio h-5 w-5 text-blue-600">
+                    <label for="m3" class="ml-2 text-gray-700">线下课程</label>
+                </div>
+                <div style="display: inline-block">
+                    <input type="radio" id="m4" name="mode" value="4" class="form-radio h-5 w-5 text-blue-600">
+                    <label for="m4" class="ml-2 text-gray-700">其他</label>
+                </div>
+            </div>
+    <div class="input-group">
+        <span class="input-group-text">课程简介</span>
+        <textarea class="form-control" aria-label="With textarea" name="introduction"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary" style="margin-top: 20px">点击创建</button>
+</form>
+<script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+<script src="{% static 'css/bootstrap.min.css' %}"></script>
+</body>
+</html>
