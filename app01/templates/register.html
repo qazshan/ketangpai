@@ -1,5 +1,8 @@
 {% extends 'layout.html' %}
 {% load static %}
+{% block css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
 {% block content %}
     <main class="container bg-white p-3 rounded" style="display: flex;align-items: center">
     <div style="display: inline-block; width: 60%;margin-left: 2%;margin-top: 2%;">
@@ -19,27 +22,61 @@
             <div class="mb-3">
                 <input type="password" name="password2" placeholder="请再次输入密码" class='form-control'>
             </div>
+            <div class="form-check mb-3">
+                <h5 class="mb-3">选择身份</h5>
+
+                <div class="flex gap-4">
+                    <!-- 学生选项 -->
+                    <label class="role-option">
+                        <input type="radio" id="student" name="role" value="2" class="absolute opacity-0">
+                        <div class="flex flex-col items-center p-4 border-2 rounded-lg cursor-pointer transition-all
+                                    hover:border-blue-400 role-container">
+                            <i class="fas fa-graduation-cap text-3xl text-gray-600 mb-2 role-icon"></i>
+                            <span class="text-gray-700">学生</span>
+                        </div>
+                    </label>
+
+                    <!-- 教师选项 -->
+                    <label class="role-option">
+                        <input type="radio" id="teacher" name="role" value="1" class="absolute opacity-0">
+                        <div class="flex flex-col items-center p-4 border-2 rounded-lg cursor-pointer transition-all
+                                    hover:border-blue-400 role-container">
+                            <i class="fas fa-chalkboard-teacher text-3xl text-gray-600 mb-2 role-icon"></i>
+                            <span class="text-gray-700">教师</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
             <div class="mb-3">
                 <input  name="name" placeholder="请输入姓名" class='form-control'>
             </div>
             <div class="mb-3">
                 <input  name="school" placeholder="请输入学校/机构" class='form-control'>
             </div>
-            <div class="form-check mb-3">
-{#身份。radio-group 优化修改：添加图标#}
-                <div style="display: inline-block">
-                    <input type="radio" id="student" name="role" value="2" class="form-radio h-5 w-5 text-blue-600">
-                    <label for="student" class="ml-2 text-gray-700">学生</label>
-                </div>
-                <div style="display: inline-block">
-                    <input type="radio" id="teacher" name="role" value="1" class="form-radio h-5 w-5 text-blue-600">
-                    <label for="teacher" class="ml-2 text-gray-700">教师</label>
-                </div>
-            </div>
+
             <div class='mb-3'>
                 <button class='btn btn-primary w-100' type="submit">注册</button>
             </div>
         </form>
     </div>
 </main>
+    <style>
+/* 自定义选中状态样式 */
+input:checked + .role-container {
+    border-color: #3b82f6; /* 蓝色 */
+    background-color: #f8fafc; /* 浅灰色背景 */
+}
+
+input:checked + .role-container .role-icon {
+    color: #3b82f6; /* 蓝色 */
+}
+
+/* 隐藏原生单选按钮 */
+.absolute {
+    position: absolute;
+}
+.opacity-0 {
+    opacity: 0;
+}
+</style>
 {% endblock %}
