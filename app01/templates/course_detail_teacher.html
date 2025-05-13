@@ -1,0 +1,244 @@
+{% extends 'layout_logined.html' %}
+{% load static %}
+
+{% block title %}
+    <title>课堂派-查看课程</title>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .modal-backdrop {
+                backdrop-filter: blur(4px);
+            }
+            .animate-fade-in {
+                animation: fadeIn 0.3s ease-in-out;
+            }
+            .animate-slide-up {
+                animation: slideUp 0.3s ease-out;
+            }
+            .animate-pulse-soft {
+                animation: pulseSoft 2s infinite;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes pulseSoft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {#    展示具体谋课程的信息#}
+    {#    在 Bootstrap中，col类默认将一行等分为12份，如果想一行放4个 div，那么每个 div 应该占据 3 份，即使用col-3类 #}
+    <div class="container text-center" style=" width: 80%">
+        {#        border: #0f5132 solid 2px;#}
+        <div class="row gy-5" style="border: red solid 0px" >
+
+            <div class="card" style="width: 100%;background-image: url('//assets.ketangpai.com/theme/min/01.jpg'); background-size: cover; opacity: 0.8; ">
+                <h1 style="margin-left: 2%;margin-top: 2%; text-align: left; color: white">{{ course.name }}</h1>
+                <p style="margin-left: 2%; text-align: left; color: white;font-size: large"> {{ course.course_class }}</p>
+                <div style="text-align: left">
+                    <p style="display: inline-block;margin-left: 2%;margin-top: 4%; text-align: left; color: white;font-size: large; width: 16%">课程码：{{ course.id }}</p>
+                    <a href="#" style="display: inline-block;margin-left: 2%;text-decoration: none; color: white;font-size: large;width: 20%">已有60人加入</a>
+
+                </div>
+            </div>
+            <div class="card-body" style="height:auto;color: #eee; text-align: left;margin-top:3%;display: inline-block;">
+                {#                            <h5 class="card-title" style="padding-top: 0;margin-top: -5%;display: inline-block">负责人：</h5>#}
+                <ul class="nav nav-tabs" id="myTab" role="tablist" style="font-size: x-large;border: 1px solid #ddd;border-top-left-radius: 8px;border-top-right-radius: 8px" >
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="choice1-tab" data-bs-toggle="tab" data-bs-target="#choice1-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">课程学习</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="choice2-tab" data-bs-toggle="tab" data-bs-target="#choice2-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">学情分析</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="choice3-tab" data-bs-toggle="tab" data-bs-target="#choice3-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">成绩管理</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="choice4-tab" data-bs-toggle="tab" data-bs-target="#choice4-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">课程介绍</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>其它</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent" >
+                    <div class="tab-pane fade show active" id="choice1-tab-pane" role="tabpanel" aria-labelledby="choice1-tab" tabindex="0" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                        {#                        课程学习内的东西#}
+                        {#                        导航条居中 justify-content-center#}
+                        <ul class="nav nav-pills justify-content-center mb-3" id="pills-tab" role="tablist" style="padding-top: 2%;">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="pills-cc1-tab" data-bs-toggle="pill" data-bs-target="#pills-cc1" type="button" role="tab" aria-controls="pills-cc1" aria-selected="true">目录</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-cc2-tab" data-bs-toggle="pill" data-bs-target="#pills-cc2" type="button" role="tab" aria-controls="pills-cc2" aria-selected="false">互动课件</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-cc3-tab" data-bs-toggle="pill" data-bs-target="#pills-cc3" type="button" role="tab" aria-controls="pills-cc3" aria-selected="false">作业</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-cc4-tab" data-bs-toggle="pill" data-bs-target="#pills-cc4" type="button" role="tab" aria-controls="pills-cc4" aria-selected="false">测试</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-cc4-tab" data-bs-toggle="pill" data-bs-target="#pills-cc5" type="button" role="tab" aria-controls="pills-cc5" aria-selected="false">资料</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-cc5-tab" data-bs-toggle="pill" data-bs-target="#pills-cc6" type="button" role="tab" aria-controls="pills-cc6" aria-selected="false">公告</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-cc6-tab" data-bs-toggle="pill" data-bs-target="#pills-cc7" type="button" role="tab" aria-controls="pills-cc7" aria-selected="false">话题</button>
+                            </li>
+
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent" style="height: auto">
+                            <div class="tab-pane fade show active" id="pills-cc1" role="tabpanel" aria-labelledby="pills-cc1-tab" tabindex="0">
+                                <div style="width: 100%;height: auto; color: #4d5154;padding-left: 4%;">
+                                    {#                                    课程进度显示、添加章节等   background: #75b798 #}
+                                    <div>
+                                        <span>共 {{ chapters|length }} 个章节</span>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="margin-left: 80%">添加章节</button>
+                                    </div>
+
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: #2b3035">添加章节</h1>
+                                                    {#                                                    右上角的叉#}
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form method="post">
+                                                        {% csrf_token %}
+                                                        <div class="mb-3">
+                                                            <label for="chapter-name" class="col-form-label" style="color: #5c636a">章节名称</label>
+                                                            <input type="text" class="form-control" id="chapter-name" name="chapter_name">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="content-text" class="col-form-label" style="color: #5c636a">章节内容</label>
+                                                            <textarea class="form-control" id="content-text" name="content"></textarea>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                                            <button type="submit" class="btn btn-primary" id="queding">确定</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="width: 100%; ">
+                                    {#章节的列表展示 一块一块  background: #6ea8fe#}
+                                    {% for aChapter in chapters %}
+                                        <div class="card" style="margin-top: 1%">
+                                            <div class="card-header" style="color: #5c636a;font-size: large;font-weight: bolder">
+                                                {{ aChapter.title }}
+                                            </div>
+                                            <div class="card-body">
+                                                <blockquote class="blockquote mb-0" style="color: #5c636a">
+                                                    <p>{{ aChapter.content }}</p>
+{#                                                    <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>#}
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pills-cc2" role="tabpanel" aria-labelledby="pills-cc2-tab" tabindex="0" style="padding: 4%; text-align: center">
+{#                               todo 后续再完善 判断有没有课件，无则图片占位 #}
+                                <img src="{% static "img/img_empty.png" %}">
+                            </div>
+                            <div class="tab-pane fade" id="pills-cc3" role="tabpanel" aria-labelledby="pills-ccc3-tab" tabindex="0" style="padding: 4%; text-align: center;height: 200px;background: #75b798">
+                                作业
+                            </div>
+                            <div class="tab-pane fade" id="pills-cc4" role="tabpanel" aria-labelledby="pills-cc4-tab" tabindex="0" style="padding: 4%; text-align: center">
+                                <img src="{% static "img/img_empty.png" %}">
+                            </div>
+                            <div class="tab-pane fade" id="pills-cc5" role="tabpanel" aria-labelledby="pills-cc5-tab" tabindex="0" style="padding: 4%; text-align: center">
+                                <img src="{% static "img/img_empty.png" %}">
+                            </div>
+                            <div class="tab-pane fade" id="pills-cc6" role="tabpanel" aria-labelledby="pills-cc6-tab" tabindex="0" style="padding: 4%; text-align: center">
+                                <img src="{% static "img/img_empty.png" %}">
+                            </div>
+                            <div class="tab-pane fade" id="pills-cc7" role="tabpanel" aria-labelledby="pills-cc7-tab" tabindex="0" style="padding: 4%; text-align: center">
+                                <img src="{% static "img/img_empty.png" %}">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane fade" id="choice2-tab-pane" role="tabpanel" aria-labelledby="choice2-tab" tabindex="0">2</div>
+                    <div class="tab-pane fade" id="choice3-tab-pane" role="tabpanel" aria-labelledby="choice3-tab" tabindex="0">3</div>
+                    <div class="tab-pane fade" id="choice4-tab-pane" role="tabpanel" aria-labelledby="choice4-tab" tabindex="0">4</div>
+                    <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">5</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {#    分割#}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取按钮和目标 div 元素
+            const button = document.getElementById('queding');
+            const targetDiv = document.getElementById('exampleModal');
+
+            // 检查元素是否存在
+            if (button && targetDiv) {
+                // 为按钮添加点击事件监听器
+                button.addEventListener('click', function() {
+                    // 修改 aria-hidden 属性为 "true"
+                    targetDiv.setAttribute('aria-hidden', 'true');
+                    {#console.log(`已将 ${targetDiv.id} 的 aria-hidden 属性设置为 true`);#}
+                });
+            } else {
+                console.error('无法找到按钮或目标 div 元素，请检查 ID 是否正确。');
+            }
+        });
+
+        const outerTabs = new bootstrap.Tab(document.querySelectorAll('#myTab button'));
+        // 初始化内层导航（禁用自动切换，使用自定义逻辑）
+        document.querySelectorAll('#pills-tab button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                // 获取当前激活的外层标签
+                const activeOuterTab = document.querySelector('#myTab .nav-link.active');
+                // 手动切换内层标签
+                const targetId = this.getAttribute('data-bs-target');
+                document.querySelectorAll('#pills-tabContent > .tab-pane').forEach(pane => {
+                    pane.classList.remove('show', 'active');
+                });
+                document.querySelector(targetId).classList.add('show', 'active');
+                // 恢复外层标签的活动状态
+                document.querySelectorAll('#myTab .nav-link').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                activeOuterTab.classList.add('active');
+                // 更新内层标签的活动状态
+                document.querySelectorAll('#pills-tab .nav-link').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+
+    </script>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+    <script src="{% static 'css/bootstrap.min.css' %}"></script>
+{% endblock %}

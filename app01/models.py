@@ -61,10 +61,14 @@ class Student_Course(models.Model):
     # 关联 User 模型，当关联的学生记录被删除时，该关联记录也会被删除
     student = models.ForeignKey(to="app01.User", to_field="account",on_delete=models.CASCADE)
     course = models.ForeignKey(to="app01.Course",to_field="id", on_delete=models.CASCADE)
-
     class Meta:
         # 用于创建一个唯一性约束，确保指定的字段组合在表中是唯一的，但它并不会将这些字段设置为主键。
         unique_together = ('student', 'course')
-
     def __str__(self):
         return f"Student: {self.student.account},{self.student.name}, Course: {self.course.name}"
+
+class Chapter(models.Model):
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=16)
+    content = models.TextField()
+    course = models.ForeignKey(to="app01.Course", to_field="id", on_delete=models.CASCADE)

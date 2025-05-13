@@ -57,8 +57,10 @@ def teacher_main(request, user_account):    #todo 此处传递的是user_account
     print('测试一下', user)
     if request.method == "POST":
         return redirect('create_course',user_account = user_account)
-
-    return render(request, 'teachermain.html',{'user':user})
+    courses = models.Course.objects.filter(teacher_id=user_account)
+    for course in courses:
+        print(course.name)
+    return render(request, 'teachermain.html',{'user':user,'courses':courses})
 
 def create_course(request,user_account):
     if request.method == "POST":
@@ -76,3 +78,15 @@ def create_course(request,user_account):
 #根据用户身份的不同在统一界面渲染不同的东西 or 直接两个课程内容的界面 倾向后者
 def course_detail_student(request,course_id):
     return render(request, 'course_detail_student.html', {'course':models.Course.objects.filter(id=course_id).first()})
+
+def course_detail_teacher(request,course_id):
+    if request.method == "POST":
+        title = request.POST.get('chapter_name')
+        content = request.POST.get('content')
+        models.Chapter.objects.create(title=title, content=content, course_id=course_id)
+    chapters = models.Chapter.objects.filter(course_id=course_id)
+    return render(request, 'course_detail_teacher.html', {'course':models.Course.objects.filter(id=course_id).first(),'chapters':chapters})
+
+# def create_chapter(request,course_id):
+#     if request.method == "POST":
+#         print("获取表单数据")

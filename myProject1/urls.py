@@ -27,4 +27,7 @@ urlpatterns = [
     # path("create_course/<str:user_account>/", views.create_course),
     path("create_course/<str:user_account>/", views.create_course, name="create_course"),
     path("login/course_detail_student.html/<int:course_id>/", views.course_detail_student, name="course_detail_student"),
+    path("login/course_detail_teacher.html/<int:course_id>/", views.course_detail_teacher,
+         name="course_detail_teacher"),
+    # path("create_chapter/<int:course_id>/",views.create_chapter, name="create_chapter"),
 ]
