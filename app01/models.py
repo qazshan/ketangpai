@@ -82,8 +82,8 @@ class Assignment(models.Model):
     assign_at = models.DateTimeField(default=timezone.now)
     due_date = models.DateTimeField()
     type_choices = (
-        (1, "教师"),
-        (2, "学生")
+        (1, "个人作业"),
+        (2, "小组作业")
     )
     type = models.SmallIntegerField(choices=type_choices)
 

@@ -8,8 +8,8 @@
 {% block content %}
     {#    展示具体谋课程的信息#}
     {#    在 Bootstrap中，col类默认将一行等分为12份，如果想一行放4个 div，那么每个 div 应该占据 3 份，即使用col-3类 #}
-    <div class="container overflow-hidden text-center" style="border: #0f5132 solid 2px; width: 80%">
-        {#        <div> </div>#}
+    <div class="container text-center" style=" width: 80%">
+        {#        border: #0f5132 solid 2px;#}
         <div class="row gy-5" style="border: red solid 0px" >
 
             <div class="card" style="width: 100%;background-image: url('//assets.ketangpai.com/theme/min/01.jpg'); background-size: cover; opacity: 0.8; ">
@@ -17,13 +17,13 @@
                 <p style="margin-left: 2%; text-align: left; color: white;font-size: large"> {{ course.course_class }}</p>
                 <div style="text-align: left">
                     <p style="display: inline-block;margin-left: 2%;margin-top: 4%; text-align: left; color: white;font-size: large; width: 16%">课程码：{{ course.id }}</p>
-                    <a href="#" style="display: inline-block;margin-left: 2%;text-decoration: none; color: white;font-size: large;width: 20%">已有60人加入</a>
+                    <a href="#" style="display: inline-block;margin-left: 2%;text-decoration: none; color: white;font-size: large;width: 20%">已有 {{ students|length }} 人加入</a>
 
                 </div>
             </div>
-            <div class="card-body" style="color: #eee; text-align: left;margin-top:3%;display: inline-block;">
+            <div class="card-body" style="height:auto;color: #eee; text-align: left;margin-top:3%;display: inline-block;">
                 {#                            <h5 class="card-title" style="padding-top: 0;margin-top: -5%;display: inline-block">负责人：</h5>#}
-                <ul class="nav nav-tabs" id="myTab" role="tablist" style="font-size: x-large">
+                <ul class="nav nav-tabs" id="myTab" role="tablist" style="font-size: x-large;border: 1px solid #ddd;border-top-left-radius: 8px;border-top-right-radius: 8px" >
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="choice1-tab" data-bs-toggle="tab" data-bs-target="#choice1-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">课程学习</button>
                     </li>
@@ -40,95 +40,154 @@
                         <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>其它</button>
                     </li>
                 </ul>
-                <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="choice1-tab-pane" role="tabpanel" aria-labelledby="choice1-tab" tabindex="0">
-                        1
-                        <div>
-                            <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                                <div class="container-fluid">
+                <div class="tab-content" id="myTabContent" >
+                    <div class="tab-pane fade show active" id="choice1-tab-pane" role="tabpanel" aria-labelledby="choice1-tab" tabindex="0" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                        {#                        课程学习内的东西#}
+                        {#                        导航条居中 justify-content-center#}
+                        <ul class="nav nav-pills justify-content-center mb-3" id="pills-tab" role="tablist" style="padding-top: 2%;">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="pills-cc1-tab" data-bs-toggle="pill" data-bs-target="#pills-cc1" type="button" role="tab" aria-controls="pills-cc1" aria-selected="true">目录</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-cc2-tab" data-bs-toggle="pill" data-bs-target="#pills-cc2" type="button" role="tab" aria-controls="pills-cc2" aria-selected="false">互动课件</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-cc3-tab" data-bs-toggle="pill" data-bs-target="#pills-cc3" type="button" role="tab" aria-controls="pills-cc3" aria-selected="false">作业</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-cc4-tab" data-bs-toggle="pill" data-bs-target="#pills-cc4" type="button" role="tab" aria-controls="pills-cc4" aria-selected="false">测试</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-cc4-tab" data-bs-toggle="pill" data-bs-target="#pills-cc5" type="button" role="tab" aria-controls="pills-cc5" aria-selected="false">资料</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-cc5-tab" data-bs-toggle="pill" data-bs-target="#pills-cc6" type="button" role="tab" aria-controls="pills-cc6" aria-selected="false">公告</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-cc6-tab" data-bs-toggle="pill" data-bs-target="#pills-cc7" type="button" role="tab" aria-controls="pills-cc7" aria-selected="false">话题</button>
+                            </li>
 
-                                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                                        <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="font-size: large">
-                                            <li class="nav-item">
-                                                <a class="nav-link active" aria-current="page" href="#">目录</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#">互动课件</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#">作业</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#">测试</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#">腾讯会议</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#">公告</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#">话题</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#">互动答题</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link disabled">Disabled</a>
-                                            </li>
-                                        </ul>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent" style="height: auto">
+                            <div class="tab-pane fade show active" id="pills-cc1" role="tabpanel" aria-labelledby="pills-cc1-tab" tabindex="0">
+                                <div style="width: 100%;height: auto; color: #4d5154;padding-left: 4%;">
+                                    {#                                    课程进度显示、添加章节等   background: #75b798 #}
+                                    <div>
+                                        <span>共 {{ chapters|length }} 个章节</span>
+                                     </div>
+
+                                    
+                                </div>
+                                <div style="width: 100%; ">
+{#                                    章节的列表展示 一块一块  background: #6ea8fe#}
+                                    {% for aChapter in chapters %}
+                                        <div class="card" style="margin-top: 1%">
+                                            <div class="card-header" style="color: #5c636a;font-size: large;font-weight: bolder">
+                                                {{ aChapter.title }}
+                                            </div>
+                                            <div class="card-body">
+                                                <blockquote class="blockquote mb-0" style="color: #5c636a">
+                                                    <p>{{ aChapter.content }}</p>
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pills-cc2" role="tabpanel" aria-labelledby="pills-cc2-tab" tabindex="0" style="padding: 4%; text-align: center">
+                                {#                               todo 后续再完善 判断有没有课件，无则图片占位 #}
+                                <img src="{% static "img/img_empty.png" %}">
+                            </div>
+                            <div class="tab-pane fade" id="pills-cc3" role="tabpanel" aria-labelledby="pills-ccc3-tab" tabindex="0" style="padding: 4%; text-align: center;height: 200px;background: #75b798">
+                                <div>
+                                    <span>共 {{ assignments|length }} 个作业</span>
+                                    </div>
+                               <div>
+                                    {% for assignment in assignments %}
+                                    <div style="width: 100%;height: 100px;background: #b6d4fe;margin-top: 1%">
+                                    <a href="{% url 'assignment_detail_student' assignment.id user.account %}" >{{ assignment.title }}</a>
+{#                                    todo 作业的盒子 标题要用a标签 加一个提交按钮#}
 
                                     </div>
+                                    {% endfor %}
                                 </div>
-                            </nav>
+                            </div>
+                            <div class="tab-pane fade" id="pills-cc4" role="tabpanel" aria-labelledby="pills-cc4-tab" tabindex="0" style="padding: 4%; text-align: center">
+                                <img src="{% static "img/img_empty.png" %}">
+                            </div>
+                            <div class="tab-pane fade" id="pills-cc5" role="tabpanel" aria-labelledby="pills-cc5-tab" tabindex="0" style="padding: 4%; text-align: center">
+                                <img src="{% static "img/img_empty.png" %}">
+                            </div>
+                            <div class="tab-pane fade" id="pills-cc6" role="tabpanel" aria-labelledby="pills-cc6-tab" tabindex="0" style="padding: 4%; text-align: center">
+                                <img src="{% static "img/img_empty.png" %}">
+                            </div>
+                            <div class="tab-pane fade" id="pills-cc7" role="tabpanel" aria-labelledby="pills-cc7-tab" tabindex="0" style="padding: 4%; text-align: center">
+                                <img src="{% static "img/img_empty.png" %}">
+                            </div>
                         </div>
+
                     </div>
-                    <div class="tab-pane fade" id="choice2-tab-pane" role="tabpanel" aria-labelledby="choice2-tab" tabindex="0">2</div>
-                    <div class="tab-pane fade" id="choice3-tab-pane" role="tabpanel" aria-labelledby="choice3-tab" tabindex="0">3</div>
-                    <div class="tab-pane fade" id="choice4-tab-pane" role="tabpanel" aria-labelledby="choice4-tab" tabindex="0">4</div>
+                    <div class="tab-pane fade" id="choice2-tab-pane" role="tabpanel" aria-labelledby="choice2-tab" tabindex="0" style="padding: 4%; text-align: center;margin-top: 4%">
+                         <img src="{% static "img/img_empty.png" %}">
+                    </div>
+                    <div class="tab-pane fade" id="choice3-tab-pane" role="tabpanel" aria-labelledby="choice3-tab" tabindex="0" style="padding: 4%; text-align: center;margin-top: 4%">
+                         <img src="{% static "img/img_empty.png" %}">
+                    </div>
+                    <div class="tab-pane fade" id="choice4-tab-pane" role="tabpanel" aria-labelledby="choice4-tab" tabindex="0" style="padding: 4%; text-align: center;margin-top: 4%">
+                         <img src="{% static "img/img_empty.png" %}">
+                    </div>
                     <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">5</div>
 
                 </div>
             </div>
         </div>
     </div>
-
     {#    分割#}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 获取所有导航链接
-            const navLinks = document.querySelectorAll('.nav-link');
+            // 获取按钮和目标 div 元素
+            const button = document.getElementById('queding');
+            const targetDiv = document.getElementById('exampleModal');
 
-            // 为每个导航链接添加点击事件监听器
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    // 阻止默认跳转行为
-                    e.preventDefault();
-
-                    // 如果是禁用状态，则不执行任何操作
-                    if (this.classList.contains('disabled')) return;
-
-                    // 移除所有导航链接的 active 类
-                    navLinks.forEach(l => l.classList.remove('active'));
-
-                    // 为当前点击的链接添加 active 类
-                    this.classList.add('active');
-
-                    // 在这里可以添加页面内容切换的逻辑
-                    // 例如：根据链接的 href 属性加载不同的内容
-                    const target = this.getAttribute('href');
-                    if (target && target !== '#') {
-                        loadContent(target); // 自定义函数，用于加载内容
-                    }
+            // 检查元素是否存在
+            if (button && targetDiv) {
+                // 为按钮添加点击事件监听器
+                button.addEventListener('click', function() {
+                    // 修改 aria-hidden 属性为 "true"
+                    targetDiv.setAttribute('aria-hidden', 'true');
+                    {#console.log(`已将 ${targetDiv.id} 的 aria-hidden 属性设置为 true`);#}
                 });
-            });
-
-            // 示例：内容加载函数（需要根据实际需求实现）
-            function loadContent(url) {
-                console.log(`Loading content from: ${url}`);
-                // 这里可以使用 fetch API 或其他方法加载内容
+            } else {
+                console.error('无法找到按钮或目标 div 元素，请检查 ID 是否正确。');
             }
         });
+
+        const outerTabs = new bootstrap.Tab(document.querySelectorAll('#myTab button'));
+        // 初始化内层导航（禁用自动切换，使用自定义逻辑）
+        document.querySelectorAll('#pills-tab button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                // 获取当前激活的外层标签
+                const activeOuterTab = document.querySelector('#myTab .nav-link.active');
+                // 手动切换内层标签
+                const targetId = this.getAttribute('data-bs-target');
+                document.querySelectorAll('#pills-tabContent > .tab-pane').forEach(pane => {
+                    pane.classList.remove('show', 'active');
+                });
+                document.querySelector(targetId).classList.add('show', 'active');
+                // 恢复外层标签的活动状态
+                document.querySelectorAll('#myTab .nav-link').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                activeOuterTab.classList.add('active');
+                // 更新内层标签的活动状态
+                document.querySelectorAll('#pills-tab .nav-link').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+
     </script>
 {% endblock %}
 

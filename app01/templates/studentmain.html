@@ -51,7 +51,7 @@
             {% for obj in courses %}
                    <div class="col-4" style="border: #0dcaf0 solid 2px">
                     <div class="card" style="width: 94%; ">
-                        <a href="{% url 'course_detail_student' obj.id %}" style="text-decoration: none; text-align: left; color:#eee;margin-bottom: 0; pointer-events: none;">
+                        <a href="{% url 'course_detail_student' obj.id user.account %}" style="text-decoration: none; text-align: left; color:#eee;margin-bottom: 0; pointer-events: none;">
                         <div style="pointer-events: auto; background-image: url('//assets.ketangpai.com/theme/min/01.jpg'); background-size: cover; opacity: 0.8;">
                             <p style="margin-left: 6%;padding-top:2% ">{{ obj.get_year_display }}学年第{{ obj.term }}学期</p>
                             <h3 style="margin-left: 8%">{{ obj.name }}</h3>

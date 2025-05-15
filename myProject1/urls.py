@@ -26,9 +26,8 @@ urlpatterns = [
     path("login/teacher_main/<str:user_account>/", views.teacher_main, name="teacher_main"),
     # path("create_course/<str:user_account>/", views.create_course),
     path("create_course/<str:user_account>/", views.create_course, name="create_course"),
-    path("login/course_detail_student.html/<int:course_id>/", views.course_detail_student, name="course_detail_student"),
-    path("login/course_detail_teacher.html/<int:course_id>/", views.course_detail_teacher,
-         name="course_detail_teacher"),
-    # path("login/course_detail_teacher.html/assign_homework/<int:course_id>/", views.assign_homework, name="assign_homework"),
-    # path("create_chapter/<int:course_id>/",views.create_chapter, name="create_chapter"),
+    path("login/course_detail_student/<int:course_id>/<str:user_account>/", views.course_detail_student, name="course_detail_student"),
+    path("login/course_detail_teacher/<int:course_id>/", views.course_detail_teacher, name="course_detail_teacher"),
+    path("login/assignment_detail_student/<int:assignment_id>/<str:user_account>/", views.assignment_detail_student, name="assignment_detail_student"),
+path("login/assignment_detail_student/download_assignment/<int:assignment_id>/", views.download_assignment, name="download_assignment"),
 ]

@@ -1,6 +1,10 @@
 # Create your views here.
 import os
 from django.utils.dateparse import parse_datetime
+from django.shortcuts import get_object_or_404
+from django.http import FileResponse, Http404
+from django.conf import settings
+
 from django.shortcuts import render,redirect,HttpResponse
 from app01 import models
 
@@ -9,7 +13,7 @@ def login(request):
         account = request.POST['account']
         password = request.POST['password']
         print(account,password)
-        #还有账号不存在的情况没判断 优化：逻辑判断
+        #todo 还有账号不存在的情况没判断 优化：逻辑判断
         row_obj = models.User.objects.filter(account = account).first()
         if row_obj.password:
             if row_obj.password == password:
@@ -78,8 +82,12 @@ def create_course(request,user_account):
     return render(request, 'create_course.html')
 
 #根据用户身份的不同在统一界面渲染不同的东西 or 直接两个课程内容的界面 倾向后者
-def course_detail_student(request,course_id):
-    return render(request, 'course_detail_student.html', {'course':models.Course.objects.filter(id=course_id).first()})
+def course_detail_student(request,course_id,user_account):
+    user = models.User.objects.get(account=user_account)
+    chapters = models.Chapter.objects.filter(course_id=course_id)
+    assignments = models.Assignment.objects.filter(course_id=course_id)
+    students = models.Student_Course.objects.filter(course_id=course_id)
+    return render(request, 'course_detail_student.html', {"user":user,'course':models.Course.objects.filter(id=course_id).first(),'chapters':chapters,'assignments':assignments,"students":students})
 
 def course_detail_teacher(request,course_id):
     if request.method == "POST":
@@ -89,7 +97,6 @@ def course_detail_teacher(request,course_id):
             content = request.POST.get('content')
             models.Chapter.objects.create(title=title, content=content, course_id=course_id)
         if "form2" in request.POST:
-
             print("form2的提交")
             title = request.POST.get('title')
             description = request.POST.get('description')
@@ -107,13 +114,44 @@ def course_detail_teacher(request,course_id):
             models.Assignment.objects.create(course_id=course_id,title=title, filepath=db_file_path, description=description, type=type, due_date=due_date)
     chapters = models.Chapter.objects.filter(course_id=course_id)
     assignments = models.Assignment.objects.filter(course_id=course_id)
+    students = models.Student_Course.objects.filter(course_id=course_id)
     # todo 能不能实现添加作业之后render到作业的页面
-    return render(request, 'course_detail_teacher.html', {'course':models.Course.objects.filter(id=course_id).first(),'chapters':chapters,'assignments':assignments})
+    return render(request, 'course_detail_teacher.html', {'course':models.Course.objects.filter(id=course_id).first(),'chapters':chapters,'assignments':assignments,"students":students})
 
-# def assign_homework(request,course_id):
-#     if request.method == "POST":
-#         username = request.POST.get('username')
-#         file = request.FILES.get('file')
-#         print(request.FILES)
-#         print(file)
-#     return render(request,'assign_homework.html',{'course':models.Course.objects.filter(id=course_id)})
+def assignment_detail_student(request,assignment_id,user_account):
+    user = models.User.objects.get(account=user_account)
+    assignment = get_object_or_404(models.Assignment, id=assignment_id)
+    return render(request, "assignment_detail_student.html",{'user':user,'assignment':assignment})
+
+def download_assignment(request,assignment_id):
+    try:
+        assignment = models.Assignment.objects.get(id=assignment_id)
+        # 拼接想要下载的文件的完整文件路径: [项目根目录]/app01/static/assignment/filepath
+        file_path = os.path.join(
+            settings.BASE_DIR,  # 项目根目录
+            'app01',  # app01 文件夹
+            assignment.filepath  # 数据库中存储的路径
+        )
+        # 标准化路径（处理斜杠方向问题）
+        file_path = os.path.normpath(file_path)
+
+        # 安全检查：确保文件在 app01/static 目录内
+        static_dir = os.path.join(settings.BASE_DIR, 'app01', 'static')
+        if not file_path.startswith(static_dir):
+            raise Http404("非法访问")
+        # 检查文件是否存在
+        if not os.path.exists(file_path):
+            raise Http404("文件不存在")
+
+        # 打开文件并返回响应
+        response = FileResponse(open(file_path, 'rb'))
+
+        # 设置 Content-Disposition 强制下载
+        response['Content-Disposition'] = f'attachment; filename={os.path.basename(file_path)}'
+        # print("1234567890")
+        return response
+
+    except models.Assignment.DoesNotExist:
+        raise Http404("作业不存在")
+    except Exception as e:
+        raise Http404(f"下载失败: {str(e)}")
