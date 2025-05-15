@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 # Create your models here.
 class Login(models.Model):
     #自动生成id
@@ -72,3 +72,26 @@ class Chapter(models.Model):
     title = models.CharField(max_length=16)
     content = models.TextField()
     course = models.ForeignKey(to="app01.Course", to_field="id", on_delete=models.CASCADE)
+
+class Assignment(models.Model):
+    #课程删除则发布的作业全删除
+    course = models.ForeignKey(to="app01.Course", to_field="id", on_delete=models.CASCADE)
+    title = models.CharField(max_length=32)
+    filepath = models.CharField(max_length=1024)
+    description = models.TextField( null=True, blank=True)
+    assign_at = models.DateTimeField(default=timezone.now)
+    due_date = models.DateTimeField()
+    type_choices = (
+        (1, "教师"),
+        (2, "学生")
+    )
+    type = models.SmallIntegerField(choices=type_choices)
+
+class Submission(models.Model):
+    student = models.ForeignKey(to="app01.User", to_field="account", on_delete=models.CASCADE)
+    course = models.ForeignKey(to="app01.Course", to_field="id", on_delete=models.CASCADE)
+    assignment = models.ForeignKey(to="app01.Assignment", to_field="id", on_delete=models.CASCADE)
+    filepath = models.CharField(max_length=1024)
+    submitted_at = models.DateTimeField(auto_now_add=True)
+    feedback = models.TextField(null=True, blank=True)
+    grade = models.IntegerField(null=True, blank=True)

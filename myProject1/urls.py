@@ -29,5 +29,6 @@ urlpatterns = [
     path("login/course_detail_student.html/<int:course_id>/", views.course_detail_student, name="course_detail_student"),
     path("login/course_detail_teacher.html/<int:course_id>/", views.course_detail_teacher,
          name="course_detail_teacher"),
+    # path("login/course_detail_teacher.html/assign_homework/<int:course_id>/", views.assign_homework, name="assign_homework"),
     # path("create_chapter/<int:course_id>/",views.create_chapter, name="create_chapter"),
 ]

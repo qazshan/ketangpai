@@ -68,7 +68,7 @@
                         <button class="nav-link" id="choice3-tab" data-bs-toggle="tab" data-bs-target="#choice3-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">成绩管理</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="choice4-tab" data-bs-toggle="tab" data-bs-target="#choice4-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">课程介绍</button>
+                        <button class="nav-link" id="choice4-tab" data-bs-toggle="tab" data-bs-target="#choice4-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">课程达成度</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>其它</button>
@@ -132,7 +132,7 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                                                            <button type="submit" class="btn btn-primary" id="queding">确定</button>
+                                                            <button type="submit" class="btn btn-primary" id="queding" name="form1">确定</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -151,7 +151,7 @@
                                             <div class="card-body">
                                                 <blockquote class="blockquote mb-0" style="color: #5c636a">
                                                     <p>{{ aChapter.content }}</p>
-{#                                                    <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>#}
+                                                    {#                                                    <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>#}
                                                 </blockquote>
                                             </div>
                                         </div>
@@ -159,11 +159,73 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pills-cc2" role="tabpanel" aria-labelledby="pills-cc2-tab" tabindex="0" style="padding: 4%; text-align: center">
-{#                               todo 后续再完善 判断有没有课件，无则图片占位 #}
+                                {#                               todo 后续再完善 判断有没有课件，无则图片占位 #}
                                 <img src="{% static "img/img_empty.png" %}">
                             </div>
                             <div class="tab-pane fade" id="pills-cc3" role="tabpanel" aria-labelledby="pills-ccc3-tab" tabindex="0" style="padding: 4%; text-align: center;height: 200px;background: #75b798">
-                                作业
+                                <div>
+                                    <span>共 {{ assignments|length }} 个作业</span>
+                                    {#                                    todo 把id改了 对应表单及js#}
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" style="margin-left: 80%">发布作业</button>
+                                </div>
+                                <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel2" style="color: #2b3035">发布作业</h1>
+                                                {#                                                    右上角的叉#}
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body" >
+                                                <form method="post" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    <div class="input-group flex-nowrap" style="margin-top: 1%">
+                                                        <span class="input-group-text" id="addon-wrapping" >作业标题</span>
+                                                        <input type="text" class="form-control" placeholder="请输入标题" aria-label="title" aria-describedby="addon-wrapping" name="title">
+                                                    </div>
+                                                    <div class="input-group" style="margin-top: 1%;height: 120px">
+                                                        <span class="input-group-text">作业描述</span>
+                                                        <textarea class="form-control" aria-label="With textarea" name="description"></textarea>
+                                                    </div>
+                                                    <div class="input-group flex-nowrap" style="margin-top: 1%">
+                                                        {#                                                        <span class="input-group-text" id="addon-wrapping" >上传作业</span>#}
+                                                        <input type="file" class="form-control" aria-label="title" aria-describedby="addon-wrapping" name="filepath">
+                                                    </div>
+                                                    <div style="color: #2b3035; text-align: left; margin-top: 1%">
+                                                        <span style="margin-right: 5%"> 作业类型 </span>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1">
+                                                            <label class="form-check-label" for="inlineRadio1">个人作业</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2">
+                                                            <label class="form-check-label" for="inlineRadio2">小组作业</label>
+                                                        </div>
+                                                    </div>
+                                                    {#                                                    todo 添加一个输入框，选择发布时间 此处省略，现在数据库为default now #}
+                                                    <div class="input-group flex-nowrap" style="margin-top: 1%">
+                                                        <span class="input-group-text" id="addon-wrapping" >截止时间</span>
+                                                        <input type="datetime-local" class="form-control" aria-label="due-date" aria-describedby="addon-wrapping" name="due-date">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                                        <button type="submit" class="btn btn-primary" id="queding" name="form2">确定</button>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    {% for assignment in assignments %}
+                                    <div style="width: 80%;height: 100px;background: #b6d4fe;margin-top: 1%">
+{#                                    todo 作业的盒子 标题要用a标签#}
+                                    
+                                    </div>
+                                    {% endfor %}
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="pills-cc4" role="tabpanel" aria-labelledby="pills-cc4-tab" tabindex="0" style="padding: 4%; text-align: center">
                                 <img src="{% static "img/img_empty.png" %}">
@@ -180,9 +242,15 @@
                         </div>
 
                     </div>
-                    <div class="tab-pane fade" id="choice2-tab-pane" role="tabpanel" aria-labelledby="choice2-tab" tabindex="0">2</div>
-                    <div class="tab-pane fade" id="choice3-tab-pane" role="tabpanel" aria-labelledby="choice3-tab" tabindex="0">3</div>
-                    <div class="tab-pane fade" id="choice4-tab-pane" role="tabpanel" aria-labelledby="choice4-tab" tabindex="0">4</div>
+                    <div class="tab-pane fade" id="choice2-tab-pane" role="tabpanel" aria-labelledby="choice2-tab" tabindex="0" style="padding: 4%; text-align: center;margin-top: 4%">
+                         <img src="{% static "img/img_empty.png" %}">
+                    </div>
+                    <div class="tab-pane fade" id="choice3-tab-pane" role="tabpanel" aria-labelledby="choice3-tab" tabindex="0" style="padding: 4%; text-align: center;margin-top: 4%">
+                         <img src="{% static "img/img_empty.png" %}">
+                    </div>
+                    <div class="tab-pane fade" id="choice4-tab-pane" role="tabpanel" aria-labelledby="choice4-tab" tabindex="0" style="padding: 4%; text-align: center;margin-top: 4%">
+                         <img src="{% static "img/img_empty.png" %}">
+                    </div>
                     <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">5</div>
 
                 </div>

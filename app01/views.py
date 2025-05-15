@@ -1,4 +1,6 @@
 # Create your views here.
+import os
+from django.utils.dateparse import parse_datetime
 from django.shortcuts import render,redirect,HttpResponse
 from app01 import models
 
@@ -81,12 +83,37 @@ def course_detail_student(request,course_id):
 
 def course_detail_teacher(request,course_id):
     if request.method == "POST":
-        title = request.POST.get('chapter_name')
-        content = request.POST.get('content')
-        models.Chapter.objects.create(title=title, content=content, course_id=course_id)
-    chapters = models.Chapter.objects.filter(course_id=course_id)
-    return render(request, 'course_detail_teacher.html', {'course':models.Course.objects.filter(id=course_id).first(),'chapters':chapters})
+        print("post方法")
+        if 'form1' in request.POST:
+            title = request.POST.get('chapter_name')
+            content = request.POST.get('content')
+            models.Chapter.objects.create(title=title, content=content, course_id=course_id)
+        if "form2" in request.POST:
 
-# def create_chapter(request,course_id):
+            print("form2的提交")
+            title = request.POST.get('title')
+            description = request.POST.get('description')
+            file = request.FILES.get('filepath')
+            type = request.POST.get('inlineRadioOptions')
+            due_date_str = request.POST.get('due-date')
+            due_date = parse_datetime(due_date_str)
+            db_file_path = os.path.join("static", "assignment", file.name)
+            file_path = os.path.join("app01", db_file_path)
+            f = open(file_path, mode='wb')
+            for chunk in file.chunks():
+                f.write(chunk)
+            f.close()
+            print(file_path,title,type,due_date)
+            models.Assignment.objects.create(course_id=course_id,title=title, filepath=db_file_path, description=description, type=type, due_date=due_date)
+    chapters = models.Chapter.objects.filter(course_id=course_id)
+    assignments = models.Assignment.objects.filter(course_id=course_id)
+    # todo 能不能实现添加作业之后render到作业的页面
+    return render(request, 'course_detail_teacher.html', {'course':models.Course.objects.filter(id=course_id).first(),'chapters':chapters,'assignments':assignments})
+
+# def assign_homework(request,course_id):
 #     if request.method == "POST":
-#         print("获取表单数据")
+#         username = request.POST.get('username')
+#         file = request.FILES.get('file')
+#         print(request.FILES)
+#         print(file)
+#     return render(request,'assign_homework.html',{'course':models.Course.objects.filter(id=course_id)})

@@ -57,3 +57,5 @@ migrations/*
 htmlcov/
 .coverage
 .tox/
+
+app01/static/assignment
