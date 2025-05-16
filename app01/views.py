@@ -2,7 +2,7 @@
 import os
 from django.utils.dateparse import parse_datetime
 from django.shortcuts import get_object_or_404
-from django.http import FileResponse, Http404
+from django.http import FileResponse, Http404, JsonResponse
 from django.conf import settings
 
 from django.shortcuts import render,redirect,HttpResponse
@@ -155,3 +155,59 @@ def download_assignment(request,assignment_id):
         raise Http404("作业不存在")
     except Exception as e:
         raise Http404(f"下载失败: {str(e)}")
+
+def user_set(request,user_account):
+    user = models.User.objects.get(account=user_account)
+    if request.method == "GET":
+        return render(request, "user_set.html", {"user": user})
+    elif request.method == "POST":
+        action = request.POST.get('action')
+        if action == 'update_role':  # 处理角色更新
+            role_value = request.POST.get('role_value')
+
+            # 将角色文本值映射为模型中的整数值
+            role_mapping = {'教师': 1, '学生': 2}
+            role_code = role_mapping.get(role_value)
+
+            if role_code is not None:
+                user.role = role_code
+                user.save()
+                return JsonResponse({
+                    'status': 'success',
+                    'message': '角色更新成功',
+                    'role_display': user.get_role_display()  # 返回角色的显示文本
+                })
+            else:
+                return JsonResponse({'status': 'error', 'message': '无效的角色选择'}, status=400)
+        if action == 'update_phone':  # 处理手机号修改
+            new_phone = request.POST.get('new_phone')
+            if new_phone:
+                user.phone = new_phone
+                user.save()
+                return JsonResponse({'status': 'success', 'message': '手机号更新成功'})
+            else:
+                return JsonResponse({'status': 'error', 'message': '新手机号不能为空'}, status=400)
+        if action == 'update_pw':  # 处理密码修改
+            pw1 = request.POST.get('pw1')
+            pw2 = request.POST.get('pw2')
+            if pw1 and pw2 and pw1 == pw2:
+                user.password=pw1
+                user.save()
+                return JsonResponse({'status': 'success', 'message': '密码更新成功'})
+            else:
+                return JsonResponse({'status': 'error', 'message': '两次密码输入不相等或密码输入不完整！'}, status=400)
+        else: #编辑信息
+            name = request.POST.get('name')
+            serial_number = request.POST.get('serial_number')
+            school = request.POST.get('school')
+            major = request.POST.get('major')
+            if name:
+                user.name = name
+            if serial_number:
+                user.serial_number = serial_number
+            if school:
+                user.school = school
+            if major:
+                user.major = major
+            user.save()
+            return HttpResponse("数据更新成功")

@@ -30,4 +30,5 @@ urlpatterns = [
     path("login/course_detail_teacher/<int:course_id>/", views.course_detail_teacher, name="course_detail_teacher"),
     path("login/assignment_detail_student/<int:assignment_id>/<str:user_account>/", views.assignment_detail_student, name="assignment_detail_student"),
 path("login/assignment_detail_student/download_assignment/<int:assignment_id>/", views.download_assignment, name="download_assignment"),
+path("login/user_set/<str:user_account>/",views.user_set,name="user_set"),
 ]

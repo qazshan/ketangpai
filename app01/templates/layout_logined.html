@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     {%  block title %}{% endblock %}
+    {% block css %}{% endblock %}
     {#    <title>Title</title>#}
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 
@@ -31,7 +32,7 @@
           </a>
           <ul class="dropdown-menu" style="">
             <li><a class="dropdown-item" href="#">开通VIP</a></li>
-            <li><a class="dropdown-item" href="#">个人设置</a></li>
+            <li><a class="dropdown-item" href="/login/user_set/{{ user.account }}/">个人设置</a></li>
             <li><a class="dropdown-item" href="/login/">退出登录</a></li>
           </ul>
         </li>
