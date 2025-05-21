@@ -422,6 +422,7 @@
                                             .then(response => response.json())
                                             .then(data => {
                                                 if (data.status === 'success') {
+                                                    alert("修改成功！")
                                                     // 清空输入框
                                                     document.getElementById('pw1').value = '';
                                                     document.getElementById('pw2').value = '';
