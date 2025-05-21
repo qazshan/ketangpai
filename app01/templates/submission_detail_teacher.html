@@ -1,0 +1,395 @@
+{% extends "layout_logined.html" %}
+
+{% block css %}
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .toggle-switch {
+            width: 60px;
+            height: 30px;
+            background-color: #ddd;
+            border-radius: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .toggle-switch-handle {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        .toggle-switch.active {
+            background-color: #0d6efd;
+        }
+        .toggle-switch.active .toggle-switch-handle {
+            transform: translateX(30px);
+        }
+        .main-content {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .bottom-section {
+            flex-grow: 1;
+            background-color: #f8f9fa;
+        }
+        /* 自定义按钮样式 */
+        .function-btn {
+            background: white !important;
+            color: #333 !important;
+            border: 1px solid #ddd !important;
+            border-radius: 8px !important;
+            transition: all 0.3s ease !important;
+        }
+
+        /* 选中状态样式 */
+        .function-btn.active {
+            background: #e3f2fd !important;
+            color: #1976d2 !important;
+            border-color: #90caf9 !important;
+        }
+        .editable-badge {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .editable-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .score-input {
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+    </style>
+    <style>
+    /* 自定义样式 */
+    .main-wrapper {
+      width: 80% !important;         /* 设置主体宽度 */
+      max-width: 1600px;             /* 最大宽度限制 */
+      margin: 0 auto;                /* 水平居中 */
+      min-height: 100vh;             /* 保持最小高度 */
+      display: flex;
+      flex-direction: column;        /* 保持原有布局结构 */
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+      .main-wrapper {
+        width: 95% !important;       /* 小屏幕加宽显示区域 */
+      }
+    }
+    .table th {
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #dee2e6;
+    }
+    .table-hover tbody tr:hover {
+        background-color: rgba(13, 110, 253, 0.05);
+    }
+    .badge {
+        font-weight: 500;
+        padding: 0.35em 0.65em;
+    }
+    </style>
+{% endblock %}
+{% block content %}
+    
+    <div class="main-wrapper">
+        <!--上块儿：作业标题以及作业信息以及是否显示成绩到学生端-->
+        <div>
+            <!-- 上部 -->
+            <header class="container-fluid border-bottom py-3">
+                <div class="row align-items-center">
+                    <!-- 左边部分 -->
+                    <div class="col-md-8">
+                        <h2 class="mb-3">{{assignment.title}}</h2>
+                        <div class="">
+                            <button class="btn btn-primary">截至：{{ assignment.due_date|date:"y/m/d H:i"}}</button>
+                            <button class="btn btn-secondary" disabled>个人作业</button>
+                            <button class="btn btn-secondary" disabled>100分</button>
+                            <button class="btn btn-secondary" disabled>查重</button>
+                        </div>
+                    </div>
+
+                    <!-- 右边部分 -->
+                    <div class="col-md-4">
+                        <div class="d-flex justify-content-end align-items-center gap-3">
+                            <!-- 切换按钮组 -->
+                            <div class="d-flex align-items-center">
+                                <div class="toggle-switch" id="toggleSwitch" style="flex-shrink: 0;">
+                                    <div class="toggle-switch-handle"></div>
+                                </div>
+                                <span class="ms-2">对学生展示成绩</span>
+                            </div>
+
+                            <!-- 下载链接 -->
+                            <a href="#" class="text-decoration-none d-flex align-items-center">
+                                <i class="bi bi-download me-1"></i> <!-- 建议使用下载图标 -->
+                                下载作业报表
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <!--中块儿-->
+        <div>
+            <main class="container-fluid py-4">
+                <div class="row g-3 align-items-center">
+                    <!-- 左边按钮组 -->
+                    <div class="col-md-8 d-flex">
+                        <div class="d-flex gap-2" id="functionButtons">
+                            <button class="function-btn btn active">全部</button>
+                            <button class="function-btn btn">未批</button>
+                            <button class="function-btn btn">已批</button>
+                            <button class="function-btn btn">未交</button>
+                        </div>
+                    </div>
+
+                    <!-- 右边搜索框 -->
+                    <div class="col-md-4 ms-auto">
+                        <div class="input-group w-100">
+                            <input type="text" class="form-control" placeholder="学生姓名搜索">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <!--下块儿-->
+        <div>
+            <div class="container-fluid p-4">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>姓名/学号</th>
+                    <th>所属标签</th>
+                    <th>相似度</th>
+                    <th>提交状态</th>
+                    <th>字数</th>
+                    <th>批阅次数</th>
+                    <th>成绩</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            <!--todo 添加一个for循环，遍历学生作业信息-->
+            <!--全部作业-->
+                <tr id="all">
+                    <!--todo 将姓名改成数据库中对应学生姓名和学号-->
+                    <td>
+                        <div class="d-flex flex-column">
+                            <span class="fw-semibold">高斯</span>
+                            <span class="text-muted fs-8 mt-1">123456</span>
+                        </div>
+                    </td>
+                    <td><span class="badge bg-secondary"></span></td>
+                    <td>0%</td>
+                    <td>
+                        <!--todo 将默认已提交修改为数据库中对应状态，时间也修改为对应状态-->
+                        <span class="text-success">✔ 已提交</span>
+                        <div class="text-muted small">25/05/13 11:56</div>
+                    </td>
+                    <!--todo 修改为正确的作业字数和批阅次数-->
+                    <td>2336</td>
+                    <td>0</td>
+                        <!-- HTML模板部分 -->
+                    <td class="editable-score">
+                        <!-- 已批改状态 -->
+                        <div class="scored d-none d-flex align-items-center gap-2">
+                            <span class="badge bg-success">85</span>
+                            <span class="text-muted small">/100</span>
+                        </div>
+                    
+                        <!-- 未批改状态 -->
+                        <!--todo data_id修改为学生对应的id-->
+                        <div class="editable-wrapper d-flex align-items-center gap-2" data-id="123">
+                            <input type="number"
+                                   class="form-control score-input" 
+                                   min="0"
+                                   max="100"
+                                   style="width: 80px"
+                                   placeholder="未批">
+                            <span class="text-muted small">/100</span>
+                        </div>
+                    </td>
+                    <td>
+                        <!--todo 显示作业-->
+                        <a href="#" class="btn btn-link btn-sm">进入批阅</a>
+                    </td>
+                </tr>
+                <!-- 其他行数据... -->
+                <tr id="all">
+                    <!--todo 将姓名改成数据库中对应学生姓名和学号-->
+                    <td>
+                        <div class="d-flex flex-column">
+                            <span class="fw-semibold">爱因斯坦</span>
+                            <span class="text-muted fs-8 mt-1">111111</span>
+                        </div>
+                    </td>
+                    <td><span class="badge bg-secondary"></span></td>
+                    <td>0%</td>
+                    <td>
+                        <!--todo 将默认已提交修改为数据库中对应状态，时间也修改为对应状态-->
+                        <span class="text-success">✔ 已提交</span>
+                        <div class="text-muted small">25/05/13 11:56</div>
+                    </td>
+                    <!--todo 修改为正确的作业字数和批阅次数-->
+                    <td>2336</td>
+                    <td>0</td>
+                        <!-- HTML模板部分 -->
+                    <td class="editable-score">
+                        <!-- 已批改状态 -->
+                        <div class="scored d-none d-flex align-items-center gap-2">
+                            <span class="badge bg-success">85</span>
+                            <span class="text-muted small">/100</span>
+                        </div>
+                    
+                        <!-- 未批改状态 -->
+                        <!--todo data_id修改为学生对应的id-->
+                        <div class="editable-wrapper d-flex align-items-center gap-2" data-id="111111">
+                            <input type="number"
+                                   class="form-control score-input" 
+                                   min="0"
+                                   max="100"
+                                   style="width: 80px"
+                                   placeholder="未批">
+                            <span class="text-muted small">/100</span>
+                        </div>
+                    </td>
+                    <td>
+                        <!--todo #跳转到显示作业页面-->
+                        <a href="#" class="btn btn-link btn-sm">进入批阅</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 切换按钮功能
+        document.getElementById('toggleSwitch').addEventListener('click', function() {
+            this.classList.toggle('active');
+        });
+
+
+        //中块按钮选中特效
+        // 初始化默认选中第一个按钮
+        document.querySelectorAll('.function-btn')[0].classList.add('active');
+
+        // 添加按钮点击事件
+        document.querySelectorAll('.function-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // 移除所有按钮的active状态
+                document.querySelectorAll('.function-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                // 设置当前按钮状态
+                this.classList.add('active');
+            });
+        });
+
+        // 绑定输入框事件
+        document.querySelectorAll('.score-input').forEach(input => {
+            // 自动聚焦输入框
+            input.addEventListener('focus', function() {
+                this.placeholder = '输入分数';
+            });
+        
+            // 提交逻辑
+            const submitHandler = (e) => {
+                if (e.type === 'keypress' && e.key !== 'Enter') return;
+                submitScore(input);
+            };
+        
+            input.addEventListener('keypress', submitHandler);
+            input.addEventListener('blur', submitHandler);
+        });
+        
+        // 修改后的submitScore函数
+        function submitScore(input) {
+            const wrapper = input.closest('.editable-wrapper');
+            const score = parseInt(input.value);
+            const studentId = wrapper.dataset.id;
+        
+            // 验证分数
+            if (isNaN(score)){
+                input.value = '';
+                return;
+            }
+            if (score < 0 || score > 100) {
+                alert('分数需在0-100之间');
+                input.focus();
+                return;
+            }
+        
+            // 发送请求
+            fetch(`{% url "submission_detail_teacher" assignment.id %}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: new URLSearchParams({
+                    score: score,
+                    student_id: studentId,  // 修改参数名保持一致性
+                    assignment_id: {{ assignment.id|safe }}  // 添加作业ID
+                })
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('网络错误');
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    alert("修改成功！")
+                    // 切换显示状态
+                    wrapper.classList.add('d-none');
+                    const scoredDiv = wrapper.nextElementSibling;
+                    scoredDiv.classList.remove('d-none');
+                    scoredDiv.querySelector('.badge').textContent = score;
+                    
+                    // 更新操作按钮
+                    const actionBtn = document.querySelector(`[data-student="${studentId}"]`);
+                    if (actionBtn) {
+                        actionBtn.textContent = '重新批阅';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('保存失败: ' + error.message);
+            });
+        }
+
+        // 获取CSRF token的辅助函数
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+    </script>
+{% endblock %}
