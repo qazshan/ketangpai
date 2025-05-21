@@ -4,6 +4,8 @@ from django.utils.dateparse import parse_datetime
 from django.shortcuts import get_object_or_404
 from django.http import FileResponse, Http404, JsonResponse
 from django.conf import settings
+from django import template
+from django.db.models import Count
 
 from django.shortcuts import render,redirect,HttpResponse
 from app01 import models
@@ -45,19 +47,33 @@ def register(request):
 
 def student_main(request,user_account):
     user = models.User.objects.get(account=user_account)
-    if request.method == "POST":
-        course_id = request.POST.get('course_id')
-        course = models.Course.objects.filter(id=course_id).first()
-        models.Student_Course.objects.create(student=user,course=course)
-        #todo 这里添加课程之后还要手动刷新，有没有方法优化，用render？
-        return redirect('student_main',user_account = user_account)
     objects = models.Student_Course.objects.filter(student_id=user_account)
     courses = []
     for obj in objects:
         row_course = models.Course.objects.filter(id=obj.course_id).first()
-        # print(row_course.name)
         courses.append(row_course)
+    if request.method == "POST":
+        if 'search' in request.POST:
+            keyword = request.POST.get('keyword')
+            # todo 搜索没有返回的处理
+            if keyword:
+                # 使用 icontains 进行不区分大小写的模糊搜索
+                courses = models.Course.objects.filter(name__icontains=keyword)
+
+        if 'add' in request.POST:
+            course_id = request.POST.get('course_id')
+            models.Student_Course.objects.create(student_id=user_account,course_id=course_id)
+            return redirect('student_main',user_account = user_account)
+
+    # 实现统计人数
+    # courses = models.Course.objects.filter(
+    #     # 筛选该用户选的课程 双下划线实现跨表查找
+    #     student_course__student_id=user_account
+    # ).annotate(
+    #     student_count=Count('student_course')  # 统计每门课程的选课人数
+    # )
     return render(request,'studentmain.html',{'user':user,'courses':courses})
+
 def teacher_main(request, user_account):    #todo 此处传递的是user_account
     user = models.User.objects.get(account=user_account)
     print('测试一下', user)

@@ -59,3 +59,4 @@ htmlcov/
 .tox/
 
 app01/static/assignment
+myProject1/settings.py
