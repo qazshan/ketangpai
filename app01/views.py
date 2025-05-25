@@ -137,9 +137,20 @@ def course_detail_teacher(request,course_id,user_account):
     # todo 能不能实现添加作业之后render到作业的页面
     return render(request, 'course_detail_teacher.html', {'user': user,'course':models.Course.objects.filter(id=course_id).first(),'chapters':chapters,'assignments':assignments,"students":students})
 
+def submission_judge(request,user_account,assignment_id):
+    try:
+        # 尝试获取数据
+        models.Submission.objects.get(student_id=user_account,assignment_id=assignment_id)
+        return True
+    except models.Submission.DoesNotExist:
+        return False
 def assignment_detail_student(request,assignment_id,user_account):
     user = models.User.objects.get(account=user_account)
     assignment = get_object_or_404(models.Assignment, id=assignment_id)
+    had_submitted = submission_judge(request,user_account,assignment_id)
+    submission = []
+    if had_submitted:
+        submission = models.Submission.objects.get(student_id=user_account,assignment_id=assignment_id)
     if request.method == "POST":
         file = request.FILES.get('filepath')
         message = request.POST.get('message')
@@ -149,8 +160,13 @@ def assignment_detail_student(request,assignment_id,user_account):
         for chunk in file.chunks():
             f.write(chunk)
         f.close()
-        models.Submission.objects.create(student=user,assignment=assignment, filepath=db_file_path, message=message)
-    return render(request, "assignment_detail_student.html",{'user':user,'assignment':assignment})
+        submission = models.Submission.objects.create(student=user,assignment=assignment, filepath=db_file_path, message=message)
+        had_submitted = True
+
+        return render(request, "assignment_detail_student.html",
+                      {'user': user, 'assignment': assignment, 'had_submitted': had_submitted, 'submission':submission})
+    return render(request, "assignment_detail_student.html",
+                  {'user':user,'assignment':assignment,'had_submitted':had_submitted,'submission':submission})
 
 def download_file(request,file_id):
     try:
@@ -275,3 +291,4 @@ def a_submission_detail(request, user_account,assignment_id,submission_id):
             models.Submission.objects.filter(id=submission_id).update(feedback=feedback)
         return redirect('submission_detail_teacher', user_account,assignment_id)
     return render(request,"submission_detail_teacher_a_student.html",{'assignment':assignment,"user":user,'submission':submission})
+

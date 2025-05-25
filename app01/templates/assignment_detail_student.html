@@ -29,23 +29,35 @@
                 </div>
             </div>
         </div>
-        <div style="width: 80%">
-            <h3>提交作业</h3>
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <button>提交内容</button>
-                <div class="input-group flex-nowrap" style="margin-top: 1%">
-{#                   todo 样式看看能不能修改 不能就算了  提交作业成功之后弹窗,点击确定后刷新界面，下面的内容变成“作业已提交 等待老师批阅” 或者跳转到其他界面#}
-                    <input type="file" class="form-control" aria-label="title" aria-describedby="addon-wrapping" name="filepath">
+        {% if had_submitted %}
+            <div class="container px-4 text-center" style="width: 100%;background: #b6d4fe;margin-top: 3%">
+                <h3 style="font-weight: bolder">作业已提交，等待老师批阅</h3>
+                <div>
+                    <p>分数为：{{ submission.grade }}</p>
+                    <textarea disabled>{{ submission.feedback }}</textarea>
                 </div>
-                <div class="input-group" style="margin-top: 1%;height: 120px">
-                    <span class="input-group-text">作业描述（选填）</span>
-                    <textarea class="form-control" aria-label="With textarea" name="message"></textarea>
-                </div>
-            </form>
 
+            </div>
 
-        </div>
+        {% else %}
+            <div style="width: 80%">
+                <h3>提交作业</h3>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <button>提交内容</button>
+                    <div class="input-group flex-nowrap" style="margin-top: 1%">
+                        {#                   todo 样式看看能不能修改 不能就算了  提交作业成功之后弹窗,点击确定后刷新界面，下面的内容变成“作业已提交 等待老师批阅” 或者跳转到其他界面#}
+                        <input type="file" class="form-control" aria-label="title" aria-describedby="addon-wrapping" name="filepath">
+                    </div>
+                    <div class="input-group" style="margin-top: 1%;height: 120px">
+                        <span class="input-group-text">作业描述（选填）</span>
+                        <textarea class="form-control" aria-label="With textarea" name="message"></textarea>
+                    </div>
+                </form>
+
+            </div>
+        {% endif %}
+
     </div>
 {% endblock %}
 
