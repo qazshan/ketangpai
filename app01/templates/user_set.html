@@ -2,20 +2,20 @@
 {% load static %}
 {% block css %}
     <style>
-.info-display, .info-edit,.role-display {
-    transition: all 0.3s ease;
-}
+        .info-display, .info-edit,.role-display {
+            transition: all 0.3s ease;
+        }
 
-.info-edit,.role-edit {
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.25rem;
-    border: 1px solid #ced4da;
-}
+        .info-edit,.role-edit {
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.25rem;
+            border: 1px solid #ced4da;
+        }
 
-.info-edit:focus {
-    box-shadow: none;
-    border-color: #86b7fe;
-}
+        .info-edit:focus {
+            box-shadow: none;
+            border-color: #86b7fe;
+        }
     </style>
     <style type="text/tailwindcss">
         @layer utilities {
@@ -45,53 +45,52 @@
 {% endblock %}
 {% block content %}
     <!-- 外层容器：占视口宽度的70%且居中 -->
-<div class="container-fluid vh-100">
-  <div class="row justify-content-center h-100">
-    <main class="col-12 col-lg-10 col-xl-8 p-4"> <!-- 响应式宽度控制 -->
-      <!-- 纵向排列的三块布局 -->
-      <div class="d-flex flex-column h-100 gap-4">
-        <!-- 上块：固定高度 -->
-        <section class="flex-grow-1 bg-light rounded-3 p-4 shadow d-flex align-items-center">
-          <!-- 头像姓名容器 -->
-          <div class="d-flex align-items-center gap-3 w-100" style="min-width: min-content;">
-            <!-- 圆形头像 -->
-            <div class="position-relative" style="flex: 0 0 auto;">
-              <img src="{% static 'img/logo_blue.png' %}"
-                   class="rounded-circle object-fit-cover"
-                   alt="用户头像"
-                   style="width: clamp(60px, 8vw, 100px);
+    <div class="container-fluid vh-100">
+        <div class="row justify-content-center h-100">
+            <main class="col-12 col-lg-10 col-xl-8 p-4"> <!-- 响应式宽度控制 -->
+                <!-- 纵向排列的三块布局 -->
+                <div class="d-flex flex-column h-100 gap-4">
+                    <!-- 上块：固定高度 -->
+                    <section class="flex-grow-1 bg-light rounded-3 p-4 shadow d-flex align-items-center">
+                        <!-- 头像姓名容器 -->
+                        <div class="d-flex align-items-center gap-3 w-100" style="min-width: min-content;">
+                            <!-- 圆形头像 -->
+                            <div class="position-relative" style="flex: 0 0 auto;">
+                                <img src="{% static 'img/logo_blue.png' %}"
+                                     class="rounded-circle object-fit-cover"
+                                     alt="用户头像"
+                                     style="width: clamp(60px, 8vw, 100px);
                           height: clamp(60px, 8vw, 100px);
                           border: 2px solid white;
                           box-shadow: 0 2px 8px rgba(0,0,0,0.1)">
-            </div>
-            <!-- 姓名部分 -->
-            <div class="flex-grow-1" style="min-width: max-content;">
-              <h2 class="mb-0 fw-semibold text-truncate"
-                  style="font-size: clamp(1.00rem, 2.5vw, 1.5rem);
+                            </div>
+                            <div class="flex-grow-1" style="min-width: max-content;">
+                                <h2 class="mb-0 fw-semibold text-truncate"
+                                    style="font-size: clamp(1.00rem, 2.5vw, 1.5rem);
                          line-height: 1.2">
-                  {{ user.name }}
-              </h2>
-            </div>
-          </div>
-        </section>
+                                    {{ user.name }}
+                                </h2>
+                            </div>
+                        </div>
+                    </section>
 
-        <!-- 中块：自适应高度 -->
-        <section class="flex-grow-1 bg-light rounded-3 p-4 shadow " style="">
-          <div class="tab-content">
-              <!-- 基本信息面板 -->
-                                <div class="tab-pane fade show active"
-                                     id="pane-basicInfo"
-                                     role="tabpanel"
-                                     aria-labelledby="tab-basicInfo">
-                                    <div class="container-fluid p-0">
-                                        <!-- 标题区 -->
-                                        <div class="d-flex justify-content-between align-items-center mb-4" style="color: black" >
-                                            <h5 class="fw-bold mb-0">账号设置</h5>
-                                        </div>
+                    <!-- 中块：自适应高度 -->
+                    <section class="flex-grow-1 bg-light rounded-3 p-4 shadow " style="">
+                        <div class="tab-content">
+                            <!-- 基本信息面板 -->
+                            <div class="tab-pane fade show active"
+                                 id="pane-basicInfo"
+                                 role="tabpanel"
+                                 aria-labelledby="tab-basicInfo">
+                                <div class="container-fluid p-0">
+                                    <!-- 标题区 -->
+                                    <div class="d-flex justify-content-between align-items-center mb-4" style="color: black" >
+                                        <h5 class="fw-bold mb-0">账号设置</h5>
+                                    </div>
 
-                                        <form class="border p-4 rounded-3" style="background-color: white; margin: 15px">
-                                            <!-- 账号设置 -->
-                                            <div class="">
+                                    <form class="border p-4 rounded-3" style="background-color: white; margin: 15px">
+                                        <!-- 账号设置 -->
+                                        <div class="">
                                             <div class="row mb-3 align-items-center">
                                                 <label class="col-form-label col-3 col-lg-2 text-secondary text-start">
                                                     账号
@@ -104,18 +103,18 @@
                                             </div>
 
                                             <!-- 所属角色 -->
-                                            <div class="row mb-3 align-items-start"> 
+                                            <div class="row mb-3 align-items-start">
                                                 <label class="col-form-label col-3 col-lg-2 text-secondary text-start pt-1">
                                                     所属角色
                                                 </label>
-                                                
+
                                                 <div class="col-6 col-lg-8">
                                                     <div class="d-flex flex-column">
                                                         <!-- 显示模式 -->
                                                         <p class="form-control-plaintext text-dark mb-0 text-start role-display" id="role-display">
                                                             {{ user.get_role_display }}
                                                         </p>
-                                                        
+
                                                         <!-- 编辑模式：单选按钮组 -->
                                                         <div class="flex flex-wrap gap-4 role-edit d-none pt-2" id="role-edit">
                                                             <!-- 老师单选按钮 -->
@@ -124,7 +123,7 @@
                                                                 <span class="radio-custom"></span>
                                                                 <span class="radio-label">教师</span>
                                                             </label>
-                                            
+
                                                             <!-- 学生单选按钮 -->
                                                             <label class="radio-container group">
                                                                 <input type="radio" name="role" id="2" class="radio-input" value="学生" {% if user.role == 2 %}checked{% endif %}>
@@ -134,13 +133,13 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <!-- 编辑模式按钮组 (默认隐藏) -->
                                                 <div class="col-3 col-lg-2 text-end btn-group d-none" id="setActions">
                                                     <button class="px-2 border border-borderColor text-textColor bg-white hover:bg-secondaryHover hover:text-primary rounded transition-colors duration-200" id="cancelrole">取消</button>
                                                     <button class="px-2 bg-primary text-white hover:bg-primaryHover rounded transition-colors duration-200 ml-2" id="saverole" name="action" value="update_role">确认</button>
                                                 </div>
-                                                
+
                                                 <!-- 去设置按钮 (默认显示) -->
                                                 <div class="col-3 col-lg-2 text-end d-block" id="setBtnContainer">
                                                     <a href="#" class="text-secondary text-decoration-none" id="setBtn">去设置</a>
@@ -159,7 +158,7 @@
                                                 </div>
                                                 <div class="col-3 col-lg-2 text-end"> <!-- 独立列对齐 -->
                                                     <a href="#" class="text-secondary text-decoration-none"
-{#                                                       打开一个模态框#}
+                                                            {#                                                       打开一个模态框#}
                                                        data-bs-toggle="modal"
                                                        data-bs-target="#phoneModal">
                                                         修改手机号
@@ -172,12 +171,12 @@
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title">修改手机号</h5>
-{#                                                            关闭模态框#}
+                                                            {#                                                            关闭模态框#}
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <form id="phoneForm">
-                                                                   {% csrf_token %}
+                                                                {% csrf_token %}
                                                                 <div class="mb-3">
                                                                     <label class="form-label">原手机号</label>
                                                                     <label class="form-control" id="show-phone">{{ user.phone }}</label>
@@ -211,7 +210,7 @@
                                                 </div>
                                                 <div class="col-3 col-lg-2 text-end"> <!--独立列对齐 -->
                                                     <a href="#" class="text-secondary text-decoration-none"
-                                                    data-bs-toggle="modal" data-bs-target="#pwModal"
+                                                       data-bs-toggle="modal" data-bs-target="#pwModal"
                                                     >修改密码</a>
                                                 </div>
                                             </div>
@@ -221,12 +220,12 @@
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title">修改密码</h5>
-{#                                                            关闭模态框#}
+                                                            {#                                                            关闭模态框#}
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <form id="pwForm">
-                                                                   {% csrf_token %}
+                                                                {% csrf_token %}
                                                                 <div class="mb-3">
                                                                     <label class="form-label">新密码</label>
                                                                     <input type="password"
@@ -252,329 +251,325 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            </div>
-                                        </form>
+                                        </div>
+                                    </form>
 
-                                        <!--第二块内容---->
-                                        <!-- 标题区 -->
-                                        <div class="row align-items-center d-flex justify-content-between mb-4" style="color: black">
-                                            <h5 class="fw-bold mb-0 col-3 col-lg-2 text-start">基础信息</h5>
-                                            <div class="col-3 col-lg-8 text-end">
-                                                <!-- 默认显示编辑按钮 -->
-                                                <button class="btn btn-link text-primary text-secondary text-decoration-none p-0 hover:text-primaryHover" id="editBtn">
-                                                    编辑
-                                                </button>
-                                                <!-- 编辑模式按钮组 (默认隐藏) -->
-                                                <div class="btn-group d-none" id="editActions">
-                                                    <button class="px-3 py-1 border border-borderColor text-textColor bg-white hover:bg-secondaryHover hover:text-primary rounded transition-colors duration-200 flex items-center" id="cancelBtn">取消</button>
-                                                    <button class="px-3 py-1 bg-primary text-white hover:bg-primaryHover rounded transition-colors duration-200 flex items-center" id="saveBtn" name="action" value="update_info">保存</button>
-                                                </div>
+                                    <!--第二块内容---->
+                                    <!-- 标题区 -->
+                                    <div class="row align-items-center d-flex justify-content-between mb-4" style="color: black">
+                                        <h5 class="fw-bold mb-0 col-3 col-lg-2 text-start">基础信息</h5>
+                                        <div class="col-3 col-lg-8 text-end">
+                                            <!-- 默认显示编辑按钮 -->
+                                            <button class="btn btn-link text-primary text-secondary text-decoration-none p-0 hover:text-primaryHover" id="editBtn">
+                                                编辑
+                                            </button>
+                                            <!-- 编辑模式按钮组 (默认隐藏) -->
+                                            <div class="btn-group d-none" id="editActions">
+                                                <button class="px-3 py-1 border border-borderColor text-textColor bg-white hover:bg-secondaryHover hover:text-primary rounded transition-colors duration-200 flex items-center" id="cancelBtn">取消</button>
+                                                <button class="px-3 py-1 bg-primary text-white hover:bg-primaryHover rounded transition-colors duration-200 flex items-center" id="saveBtn" name="action" value="update_info">保存</button>
                                             </div>
                                         </div>
-                                        <!-- 表单区 -->
-                                        <form class="border p-4 rounded-3 border-t pt-4" style="background-color: white; margin: 15px" id="infoForm">
-                                            <!-- 姓名 -->
-                                            {% csrf_token %}
-                                            <div class="row mb-3 align-items-center">
-                                                <label class="col-form-label col-3 col-lg-2 text-secondary text-start">
-                                                    姓名
-                                                </label>
-                                                <div class="col-9 col-lg-10">
-                                                    <!-- 显示模式 -->
-                                                    <p class="form-control-plaintext text-dark mb-0 text-start info-display">
-                                                        {{ user.name }}
-                                                    </p>
-                                                    <!-- 编辑模式 -->
-                                                    <input type="text"
-                                                           class="form-control info-edit d-none"
-                                                           name="name"
-                                                           value="{{ user.name }}">
-                                                </div>
-                                            </div>
-
-                                            <!-- 学号 -->
-                                            <div class="row mb-3 align-items-center">
-                                                <label class="col-form-label col-3 col-lg-2 text-secondary text-start">
-                                                    学号
-                                                </label>
-                                                <div class="col-6 col-lg-8">
-                                                    <p class="form-control-plaintext text-dark mb-0 text-start info-display">
-                                                        {{ user.serial_number}}
-                                                    </p>
-                                                    <input type="text"
-                                                           class="form-control info-edit d-none"
-                                                           name="serial_number"
-                                                           value="{{ user.serial_number}}">
-                                                </div>
-                                            </div>
-
-                                            <!-- 学校 -->
-                                            <div class="row mb-3 align-items-center">
-                                                <label class="col-form-label col-3 col-lg-2 text-secondary text-start">
-                                                    学校
-                                                </label>
-                                                <div class="col-6 col-lg-8">
-                                                    <p class="form-control-plaintext text-dark mb-0 text-start info-display">
-                                                        {{ user.school}}
-                                                    </p>
-                                                    <input type="text"
-                                                           class="form-control info-edit d-none"
-                                                           name="school"
-                                                           value="{{ user.school}}"
-                                                    >
-                                                </div>
-                                            </div>
-
-                                            <!-- 专业 -->
-                                            <div class="row mb-3 align-items-center">
-                                                <label class="col-form-label col-3 col-lg-2 text-secondary text-start">
-                                                    专业
-                                                </label>
-                                                <div class="col-6 col-lg-8">
-                                                    <p class="form-control-plaintext text-dark mb-0 text-start info-display">
-                                                        {{user.major}}
-                                                    </p>
-                                                    <input type="text"
-                                                           class="form-control info-edit d-none"
-                                                           name="major"
-                                                           value="{{ user.major}}">
-                                                </div>
-                                            </div>
-                                        </form>
                                     </div>
+                                    <!-- 表单区 -->
+                                    <form class="border p-4 rounded-3 border-t pt-4" style="background-color: white; margin: 15px" id="infoForm">
+                                        <!-- 姓名 -->
+                                        {% csrf_token %}
+                                        <div class="row mb-3 align-items-center">
+                                            <label class="col-form-label col-3 col-lg-2 text-secondary text-start">
+                                                姓名
+                                            </label>
+                                            <div class="col-9 col-lg-10">
+                                                <!-- 显示模式 -->
+                                                <p class="form-control-plaintext text-dark mb-0 text-start info-display">
+                                                    {{ user.name }}
+                                                </p>
+                                                <!-- 编辑模式 -->
+                                                <input type="text"
+                                                       class="form-control info-edit d-none"
+                                                       name="name"
+                                                       value="{{ user.name }}">
+                                            </div>
+                                        </div>
+
+                                        <!-- 学号 -->
+                                        <div class="row mb-3 align-items-center">
+                                            <label class="col-form-label col-3 col-lg-2 text-secondary text-start">
+                                                学号
+                                            </label>
+                                            <div class="col-6 col-lg-8">
+                                                <p class="form-control-plaintext text-dark mb-0 text-start info-display">
+                                                    {{ user.serial_number}}
+                                                </p>
+                                                <input type="text"
+                                                       class="form-control info-edit d-none"
+                                                       name="serial_number"
+                                                       value="{{ user.serial_number}}">
+                                            </div>
+                                        </div>
+
+                                        <!-- 学校 -->
+                                        <div class="row mb-3 align-items-center">
+                                            <label class="col-form-label col-3 col-lg-2 text-secondary text-start">
+                                                学校
+                                            </label>
+                                            <div class="col-6 col-lg-8">
+                                                <p class="form-control-plaintext text-dark mb-0 text-start info-display">
+                                                    {{ user.school}}
+                                                </p>
+                                                <input type="text"
+                                                       class="form-control info-edit d-none"
+                                                       name="school"
+                                                       value="{{ user.school}}"
+                                                >
+                                            </div>
+                                        </div>
+
+                                        <!-- 专业 -->
+                                        <div class="row mb-3 align-items-center">
+                                            <label class="col-form-label col-3 col-lg-2 text-secondary text-start">
+                                                专业
+                                            </label>
+                                            <div class="col-6 col-lg-8">
+                                                <p class="form-control-plaintext text-dark mb-0 text-start info-display">
+                                                    {{user.major}}
+                                                </p>
+                                                <input type="text"
+                                                       class="form-control info-edit d-none"
+                                                       name="major"
+                                                       value="{{ user.major}}">
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-          </div>
-        </section>
-      </div>
-    </main>
-  </div>
-</div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
 {% endblock %}
 {% block js %}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-                                        <script>
-                                        //保存手机号
-                                        document.getElementById('savePhone').addEventListener('click', function () {
-                                            const newPhone = document.getElementById('newPhone').value;
-                                            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    <script>
+        //保存手机号
+        document.getElementById('savePhone').addEventListener('click', function () {
+            const newPhone = document.getElementById('newPhone').value;
+            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
-                                            // 发送AJAX请求
-                                            fetch(`{% url 'user_set' user.account %}`, {
-                                                method: 'POST',
-                                                headers: {
-                                                    'Content-Type': 'application/x-www-form-urlencoded',
-                                                    'X-CSRFToken': csrfToken,
-                                                },
-                                                body: new URLSearchParams({
-                                                    action: 'update_phone', // 区分操作类型
-                                                    new_phone: newPhone,
-                                                })
-                                            })
-                                            .then(response => response.json())
-                                            .then(data => {
-                                                if (data.status === 'success') {
-                                                    // 更新页面显示
-                                                    document.getElementById('show-phone').textContent=newPhone;
-                                                    document.getElementById('phone-display').textContent = newPhone;
-                                                    // 关闭弹窗
-                                                    // 获取弹窗的 DOM 元素
-                                                    const modalElement = document.getElementById('phoneModal');
-                                                    // 调用 Bootstrap 的 hide 方法
-                                                    bootstrap.Modal.getInstance(modalElement).hide(); // 安全获取实例并关闭
-                                                    // 清空输入框
-                                                    document.getElementById('newPhone').value = '';
-                                                } else {
-                                                    alert('手机号修改失败：' + data.message);
-                                                }
-                                            })
-                                            .catch(error => {
-                                                console.error('请求失败:', error);
-                                                alert('网络请求失败，请重试');
-                                            });
-                                        });
-                                        
-                                        //保存密码
-                                        document.getElementById('savePw').addEventListener('click', function () {
-                                            const pw1 = document.getElementById('pw1').value;
-                                            const pw2 = document.getElementById('pw2').value;
-                                            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-                                             if (pw1!=pw2){
-                                                 alert("两次密码输入不一致！")
-                                                 return;
-                                             }
-                                            // 发送AJAX请求
-                                            fetch(`{% url 'user_set' user.account %}`, {
-                                                method: 'POST',
-                                                headers: {
-                                                    'Content-Type': 'application/x-www-form-urlencoded',
-                                                    'X-CSRFToken': csrfToken,
-                                                },
-                                                body: new URLSearchParams({
-                                                    action: 'update_pw', // 区分操作类型
-                                                    pw1: pw1,
-                                                    pw2: pw2,
-                                                })
-                                            })
-                                            .then(response => response.json())
-                                            .then(data => {
-                                                if (data.status === 'success') {
-                                                    alert("修改成功！")
-                                                    // 清空输入框
-                                                    document.getElementById('pw1').value = '';
-                                                    document.getElementById('pw2').value = '';
-                                                    // 关闭弹窗
-                                                    // 获取弹窗的 DOM 元素
-                                                    const modalElement = document.getElementById('pwModal');
-                                                    // 调用 Bootstrap 的 hide 方法
-                                                    bootstrap.Modal.getInstance(modalElement).hide(); // 安全获取实例并关闭
-                                                } else {
-                                                    alert('手机号修改失败：' + data.message);
-                                                }
-                                            })
-                                            .catch(error => {
-                                                console.error('请求失败:', error);
-                                                alert('网络请求失败，请重试');
-                                            });
-                                        });
-                                        
-                                        // 确认编辑
-                                        document.getElementById('saveBtn').addEventListener('click', function () {
-                                            const form = document.getElementById('infoForm');
-                                            const formData = new FormData(form);
-                                            $.ajax({
-                                                type: 'POST',
-                                                url: window.location.href,
-                                                data: formData,
-                                                processData: false,
-                                                contentType: false,
-                                                success: function (response) {
-                                                    // 更新页面数据
-                                                    const displays = document.querySelectorAll('.info-display');
-                                                    const inputs = document.querySelectorAll('.info-edit');
-                                                    inputs.forEach((input, index) => {
-                                                        displays[index].textContent = input.value;
-                                                        input.classList.add('d-none');
-                                                    });
-                                                    displays.forEach(display => display.classList.remove('d-none'));
-                                                    document.getElementById('editBtn').classList.remove('d-none');
-                                                    document.getElementById('editActions').classList.add('d-none');
-                                                },
-                                                error: function (error) {
-                                                    console.log('保存失败', error);
-                                                }
-                                            });
-                                        });
-                                        
-                                        //确认角色修改
-                                        document.getElementById('saverole').addEventListener("click", function (){
-                                            //获取当前角色值
-                                            const selectedRole=document.querySelector('input[name="role"]:checked').value;
-                                            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+            // 发送AJAX请求
+            fetch(`{% url 'user_set' user.account %}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: new URLSearchParams({
+                    action: 'update_phone', // 区分操作类型
+                    new_phone: newPhone,
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // 更新页面显示
+                        document.getElementById('show-phone').textContent=newPhone;
+                        document.getElementById('phone-display').textContent = newPhone;
+                        // 关闭弹窗
+                        // 获取弹窗的 DOM 元素
+                        const modalElement = document.getElementById('phoneModal');
+                        // 调用 Bootstrap 的 hide 方法
+                        bootstrap.Modal.getInstance(modalElement).hide(); // 安全获取实例并关闭
+                        // 清空输入框
+                        document.getElementById('newPhone').value = '';
+                    } else {
+                        alert('手机号修改失败：' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('请求失败:', error);
+                    alert('网络请求失败，请重试');
+                });
+        });
 
-                                            // 发送AJAX请求
-                                            fetch(`{% url 'user_set' user.account %}`, {
-                                                method: 'POST',
-                                                headers: {
-                                                    'Content-Type': 'application/x-www-form-urlencoded',
-                                                    'X-CSRFToken': csrfToken,
-                                                },
-                                                body: new URLSearchParams({
-                                                    action: 'update_role', // 区分操作类型
-                                                    role_value:selectedRole
-                                                })
-                                            })
-                                            .then(response => response.json())
-                                            .then(data => {
-                                                if (data.status === 'success') {
-                                                    // 更新页面显示的角色
-                                                    document.getElementById('role-display').textContent = data.role_display;
-                                                    // 退出编辑模式
-                                                    document.getElementById('setBtn').classList.remove('d-none');
-                                                    document.getElementById('setActions').classList.add('d-none');
-                                                    document.getElementById('role-display').classList.remove('d-none');
-                                                    document.getElementById('role-edit').classList.add('d-none');
-                                                } else {
-                                                    alert('角色修改失败：' + data.message);
-                                                }
-                                            })
-                                            .catch(error => {
-                                                console.error('请求失败:', error);
-                                                alert('网络请求失败，请重试');
-                                            });
+        //保存密码
+        document.getElementById('savePw').addEventListener('click', function () {
+            const pw1 = document.getElementById('pw1').value;
+            const pw2 = document.getElementById('pw2').value;
+            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+            if (pw1 !== pw2){
+                alert("两次密码输入不一致！")
+                return;
+            }
+            // 发送AJAX请求
+            fetch(`{% url 'user_set' user.account %}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: new URLSearchParams({
+                    action: 'update_pw', // 区分操作类型
+                    pw1: pw1,
+                    pw2: pw2,
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert("修改成功！")
+                        document.getElementById('pw1').value = '';
+                        document.getElementById('pw2').value = '';
+                        // 关闭弹窗 获取弹窗的 DOM 元素
+                        const modalElement = document.getElementById('pwModal');
+                        // 调用 Bootstrap 的 hide 方法
+                        bootstrap.Modal.getInstance(modalElement).hide(); // 安全获取实例并关闭
+                    } else {
+                        alert('手机号修改失败：' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('请求失败:', error);
+                    alert('网络请求失败，请重试');
+                });
+        });
 
-                                        })
-                                        
-                                            //进入角色编辑模式
-                                        document.getElementById('setBtn').addEventListener("click", function (){
-                                            //切换按钮显示
-                                            this.classList.add('d-none');
-                                            document.getElementById('setActions').classList.remove('d-none');
-                                            document.getElementById('role-display').classList.add('d-none');
-                                            document.getElementById('role-edit').classList.remove('d-none');
-                                        });
-                                        
-                                            // 进入信息编辑模式
-                                        document.getElementById('editBtn').addEventListener('click', function() {
-                                            // 切换按钮显示
-                                            this.classList.add('d-none');
-                                            document.getElementById('editActions').classList.remove('d-none');
+        // 确认编辑
+        document.getElementById('saveBtn').addEventListener('click', function () {
+            const form = document.getElementById('infoForm');
+            const formData = new FormData(form);
+            $.ajax({
+                type: 'POST',
+                url: window.location.href,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    // 更新页面数据
+                    const displays = document.querySelectorAll('.info-display');
+                    const inputs = document.querySelectorAll('.info-edit');
+                    inputs.forEach((input, index) => {
+                        displays[index].textContent = input.value;
+                        input.classList.add('d-none');
+                    });
+                    displays.forEach(display => display.classList.remove('d-none'));
+                    document.getElementById('editBtn').classList.remove('d-none');
+                    document.getElementById('editActions').classList.add('d-none');
+                },
+                error: function (error) {
+                    console.log('保存失败', error);
+                }
+            });
+        });
 
-                                            // 显示输入框并保存原始值
-                                            const displays = document.querySelectorAll('.info-display');
-                                            const inputs = document.querySelectorAll('.info-edit');
+        //确认角色修改
+        document.getElementById('saverole').addEventListener("click", function (){
+            //获取当前角色值
+            const selectedRole=document.querySelector('input[name="role"]:checked').value;
+            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
-                                            inputs.forEach((input, index) => {
-                                                input.classList.remove('d-none');
-                                                input.dataset.original = displays[index].textContent.trim();
-                                            });
-                                            displays.forEach(display => display.classList.add('d-none'));
-                                        });
-                                        
-                                        //取消角色编辑
-                                        document.getElementById('cancelrole').addEventListener("click", function (){
-                                            //回复按钮状态
-                                            document.getElementById('setBtn').classList.remove('d-none');
-                                            document.getElementById('setActions').classList.add('d-none');
+            // 发送AJAX请求
+            fetch(`{% url 'user_set' user.account %}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: new URLSearchParams({
+                    action: 'update_role', // 区分操作类型
+                    role_value:selectedRole
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // 更新页面显示的角色
+                        document.getElementById('role-display').textContent = data.role_display;
+                        // 退出编辑模式
+                        document.getElementById('setBtn').classList.remove('d-none');
+                        document.getElementById('setActions').classList.add('d-none');
+                        document.getElementById('role-display').classList.remove('d-none');
+                        document.getElementById('role-edit').classList.add('d-none');
+                    } else {
+                        alert('角色修改失败：' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('请求失败:', error);
+                    alert('网络请求失败，请重试');
+                });
 
-                                            //回复原始值
-                                            document.getElementById('role-edit').classList.add('d-none');
-                                            document.getElementById('role-display').classList.remove('d-none');
-                                        });
-                                        
-                                        // 取消编辑
-                                        document.getElementById('cancelBtn').addEventListener('click', function() {
-                                            // 恢复按钮状态
-                                            document.getElementById('editBtn').classList.remove('d-none');
-                                            document.getElementById('editActions').classList.add('d-none');
+        })
 
-                                            // 恢复原始值
-                                            document.querySelectorAll('.info-edit').forEach(input => {
-                                                input.value = input.dataset.original;
-                                                input.classList.add('d-none');
-                                            });
-                                            document.querySelectorAll('.info-display').forEach(display => {
-                                                display.classList.remove('d-none');
-                                            });
-                                        });
+        //进入角色编辑模式
+        document.getElementById('setBtn').addEventListener("click", function (){
+            //切换按钮显示
+            this.classList.add('d-none');
+            document.getElementById('setActions').classList.remove('d-none');
+            document.getElementById('role-display').classList.add('d-none');
+            document.getElementById('role-edit').classList.remove('d-none');
+        });
+
+        // 进入信息编辑模式
+        document.getElementById('editBtn').addEventListener('click', function() {
+            // 切换按钮显示
+            this.classList.add('d-none');
+            document.getElementById('editActions').classList.remove('d-none');
+
+            // 显示输入框并保存原始值
+            const displays = document.querySelectorAll('.info-display');
+            const inputs = document.querySelectorAll('.info-edit');
+
+            inputs.forEach((input, index) => {
+                input.classList.remove('d-none');
+                input.dataset.original = displays[index].textContent.trim();
+            });
+            displays.forEach(display => display.classList.add('d-none'));
+        });
+
+        //取消角色编辑
+        document.getElementById('cancelrole').addEventListener("click", function (){
+            //回复按钮状态
+            document.getElementById('setBtn').classList.remove('d-none');
+            document.getElementById('setActions').classList.add('d-none');
+
+            //回复原始值
+            document.getElementById('role-edit').classList.add('d-none');
+            document.getElementById('role-display').classList.remove('d-none');
+        });
+
+        // 取消编辑
+        document.getElementById('cancelBtn').addEventListener('click', function() {
+            // 恢复按钮状态
+            document.getElementById('editBtn').classList.remove('d-none');
+            document.getElementById('editActions').classList.add('d-none');
+
+            // 恢复原始值
+            document.querySelectorAll('.info-edit').forEach(input => {
+                input.value = input.dataset.original;
+                input.classList.add('d-none');
+            });
+            document.querySelectorAll('.info-display').forEach(display => {
+                display.classList.remove('d-none');
+            });
+        });
 
 
-                                        tailwind.config = {
-                                            theme: {
-                                                extend: {
-                                                    colors: {
-                                                        primary: '#165DFF',
-                                                        primaryHover: '#4080DD',
-                                                        secondary: '#F2F3F5',
-                                                        secondaryHover: '#E8F3FF',
-                                                        borderColor: '#C9CDD4',
-                                                        textColor: '#1D2129',
-                                                    },
-                                                }
-                                            }
-                                        }
-                                        </script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        primaryHover: '#4080DD',
+                        secondary: '#F2F3F5',
+                        secondaryHover: '#E8F3FF',
+                        borderColor: '#C9CDD4',
+                        textColor: '#1D2129',
+                    },
+                }
+            }
+        }
+    </script>
 {% endblock %}

@@ -10,6 +10,8 @@ from django.db.models import Count
 from django.shortcuts import render,redirect,HttpResponse
 from app01 import models
 
+# register = template.Library()
+
 def login(request):
     if request.method == "POST":
         account = request.POST['account']
@@ -105,7 +107,8 @@ def course_detail_student(request,course_id,user_account):
     students = models.Student_Course.objects.filter(course_id=course_id)
     return render(request, 'course_detail_student.html', {"user":user,'course':models.Course.objects.filter(id=course_id).first(),'chapters':chapters,'assignments':assignments,"students":students})
 
-def course_detail_teacher(request,course_id):
+def course_detail_teacher(request,course_id,user_account):
+    user = models.User.objects.get(account=user_account)
     if request.method == "POST":
         print("post方法")
         if 'form1' in request.POST:
@@ -132,16 +135,26 @@ def course_detail_teacher(request,course_id):
     assignments = models.Assignment.objects.filter(course_id=course_id)
     students = models.Student_Course.objects.filter(course_id=course_id)
     # todo 能不能实现添加作业之后render到作业的页面
-    return render(request, 'course_detail_teacher.html', {'course':models.Course.objects.filter(id=course_id).first(),'chapters':chapters,'assignments':assignments,"students":students})
+    return render(request, 'course_detail_teacher.html', {'user': user,'course':models.Course.objects.filter(id=course_id).first(),'chapters':chapters,'assignments':assignments,"students":students})
 
 def assignment_detail_student(request,assignment_id,user_account):
     user = models.User.objects.get(account=user_account)
     assignment = get_object_or_404(models.Assignment, id=assignment_id)
+    if request.method == "POST":
+        file = request.FILES.get('filepath')
+        message = request.POST.get('message')
+        db_file_path = os.path.join("static", "submission", file.name)
+        file_path = os.path.join("app01", db_file_path)
+        f = open(file_path, mode='wb')
+        for chunk in file.chunks():
+            f.write(chunk)
+        f.close()
+        models.Submission.objects.create(student=user,assignment=assignment, filepath=db_file_path, message=message)
     return render(request, "assignment_detail_student.html",{'user':user,'assignment':assignment})
 
-def download_assignment(request,assignment_id):
+def download_file(request,file_id):
     try:
-        assignment = models.Assignment.objects.get(id=assignment_id)
+        assignment = models.Assignment.objects.get(id=file_id)
         # 拼接想要下载的文件的完整文件路径: [项目根目录]/app01/static/assignment/filepath
         file_path = os.path.join(
             settings.BASE_DIR,  # 项目根目录
@@ -150,7 +163,6 @@ def download_assignment(request,assignment_id):
         )
         # 标准化路径（处理斜杠方向问题）
         file_path = os.path.normpath(file_path)
-
         # 安全检查：确保文件在 app01/static 目录内
         static_dir = os.path.join(settings.BASE_DIR, 'app01', 'static')
         if not file_path.startswith(static_dir):
@@ -158,10 +170,8 @@ def download_assignment(request,assignment_id):
         # 检查文件是否存在
         if not os.path.exists(file_path):
             raise Http404("文件不存在")
-
         # 打开文件并返回响应
         response = FileResponse(open(file_path, 'rb'))
-
         # 设置 Content-Disposition 强制下载
         response['Content-Disposition'] = f'attachment; filename={os.path.basename(file_path)}'
         # print("1234567890")
@@ -180,11 +190,9 @@ def user_set(request,user_account):
         action = request.POST.get('action')
         if action == 'update_role':  # 处理角色更新
             role_value = request.POST.get('role_value')
-
             # 将角色文本值映射为模型中的整数值
             role_mapping = {'教师': 1, '学生': 2}
             role_code = role_mapping.get(role_value)
-
             if role_code is not None:
                 user.role = role_code
                 user.save()
@@ -212,7 +220,7 @@ def user_set(request,user_account):
                 return JsonResponse({'status': 'success', 'message': '密码更新成功'})
             else:
                 return JsonResponse({'status': 'error', 'message': '两次密码输入不相等或密码输入不完整！'}, status=400)
-        else: #编辑信息
+        else:   #编辑信息
             name = request.POST.get('name')
             serial_number = request.POST.get('serial_number')
             school = request.POST.get('school')
@@ -228,19 +236,42 @@ def user_set(request,user_account):
             user.save()
             return HttpResponse("数据更新成功")
 
-def submission_detail_teacher(request,assignment_id):
+def submission_detail_teacher(request,user_account,assignment_id):
+    user = models.User.objects.get(account = user_account)
     assignment =models.Assignment.objects.get(id=assignment_id)
-    # todo后续可改进为 submissions = models.Submission.objects.filter(assignment_id=assignment_id).first()
-    if request.method == "GET":
-        return render(request,"submission_detail_teacher.html",{'assignment':assignment})
-    elif request.method == "POST":
-        if request.method == "POST":
-            # 获取参数
-            student_id = request.POST.get('student_id')
-            score = request.POST.get('score')
+    course = models.Course.objects.get(id=assignment.course_id)
+    records = models.Student_Course.objects.filter(course=course)
+    students = []
+    for record in records:
+        student = models.User.objects.get(account=record.student.account)
+        students.append(student)
+    # 仅传递已交作业的学生id
+    submited_students = []
+    submissions = models.Submission.objects.filter(assignment=assignment)
+    for submission in submissions:
+        if submission.student in students:
+            submited_students.append(submission.student.account)
+    if request.method == "POST":
+        # ？id？是js处理之后得到的？js我其实也没看懂
+        student_id = request.POST.get('student_id')
+        score = request.POST.get('score')
         if student_id and score:
             # todo 这里需要添加一个save逻辑，否则会跳出一个保存失败，建议调试的时候把下面的else返回那行注释掉
             print(student_id,score)
             return JsonResponse({'status': 'success', 'message': '成绩修改成功！'})
         else:
             return JsonResponse({'status': 'error', 'message': '成绩丢失或学生ID不存在！'}, status=400)
+    return render(request,"submission_detail_teacher.html",{'assignment':assignment,"user":user,'submissions':submissions,'students':students,'submited_students':submited_students})
+
+def a_submission_detail(request, user_account,assignment_id,submission_id):
+    user = models.User.objects.get(account=user_account)
+    assignment =models.Assignment.objects.get(id=assignment_id)
+    submission = models.Submission.objects.get(id=submission_id)
+    if request.method == "POST":
+        grade = request.POST.get('grade')
+        models.Submission.objects.filter(id=submission_id).update(grade=grade)
+        feedback = request.POST.get('feedback')
+        if feedback:
+            models.Submission.objects.filter(id=submission_id).update(feedback=feedback)
+        return redirect('submission_detail_teacher', user_account,assignment_id)
+    return render(request,"submission_detail_teacher_a_student.html",{'assignment':assignment,"user":user,'submission':submission})

@@ -17,7 +17,7 @@
                 <p style="margin-left: 2%; text-align: left; color: white;font-size: large"> {{ course.course_class }}</p>
                 <div style="text-align: left">
                     <p style="display: inline-block;margin-left: 2%;margin-top: 4%; text-align: left; color: white;font-size: large; width: 16%">课程码：{{ course.id }}</p>
-                    <a href="#" style="display: inline-block;margin-left: 2%;text-decoration: none; color: white;font-size: large;width: 20%">已有60人加入</a>
+                    <a href="#" style="display: inline-block;margin-left: 2%;text-decoration: none; color: white;font-size: large;width: 20%">已有{{ students|length }}人加入</a>
 
                 </div>
             </div>
@@ -224,7 +224,8 @@
 
                                                     <!-- 右侧操作按钮 -->
                                                     <div class="col-3 text-end">
-                                                        <a href="/login/course_detail_teacher/submission_detail_teacher/{{ assignment.id }}"
+{#                                                        #}
+                                                        <a href="{% url 'submission_detail_teacher' user.account assignment.id %}"
                                                            class="btn btn-primary">
                                                             查看作业
                                                         </a>
@@ -316,16 +317,16 @@
 
 {% block js %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <style>
-        /* 自定义样式补充 */
-        .form-control-plaintext {
-            padding: 0.375rem 0;
-            line-height: 1.5;
-            background-color: transparent;
-            border: solid transparent;
-            border-width: 1px 0;
-        }
-    </style>
+{#    <style>#}
+{#        /* 自定义样式补充 */#}
+{#        .form-control-plaintext {#}
+{#            padding: 0.375rem 0;#}
+{#            line-height: 1.5;#}
+{#            background-color: transparent;#}
+{#            border: solid transparent;#}
+{#            border-width: 1px 0;#}
+{#        }#}
+{#    </style>#}
     <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
     <script src="{% static 'css/bootstrap.min.css' %}"></script>
 {% endblock %}

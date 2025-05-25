@@ -89,8 +89,8 @@ class Assignment(models.Model):
 
 class Submission(models.Model):
     student = models.ForeignKey(to="app01.User", to_field="account", on_delete=models.CASCADE)
-    course = models.ForeignKey(to="app01.Course", to_field="id", on_delete=models.CASCADE)
     assignment = models.ForeignKey(to="app01.Assignment", to_field="id", on_delete=models.CASCADE)
+    message = models.TextField(null=True, blank=True)
     filepath = models.CharField(max_length=1024)
     submitted_at = models.DateTimeField(auto_now_add=True)
     feedback = models.TextField(null=True, blank=True)

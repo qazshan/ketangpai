@@ -1,12 +1,11 @@
 {% extends 'layout_logined.html' %}
 {% load static %}
-
 {% block title %}
-    <title>课堂派-查看作业</title>
+<title>课堂派</title>
 {% endblock %}
 
 {% block content %}
-    <div class="container px-4 text-center" style="width: 80%;">
+     <div class="container px-4 text-center" style="width: 80%;">
         <div class="card" style="margin-top: 4%">
             <div class="card-body" style="">
                 <p style="font-weight: bolder;font-size: x-large;color: #1a1e21;text-align: left">{{ assignment.title }}</p>
@@ -19,28 +18,30 @@
 
                     <div class="row mb-3" style="">
                         <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm" >
-                            <a href="{% url 'download_file' assignment.id %}"><img src="{% static 'img/file-earmark-arrow-down.svg' %}" style="object-fit: cover;width: 100%;height: 100%" alt="">
+                            <a href="{% url 'download_file' submission.id %}"><img src="{% static 'img/file-earmark-arrow-down.svg' %}" style="object-fit: cover;width: 100%;height: 100%" alt="">
                             </a>
                         </label>
                         <div class="col-sm-10">
-                            <p style="margin: 0">{{ assignment.filepath }}</p>
-                            <a href="{% url 'download_file' assignment.id %}">下载</a></div>
+                            <p style="margin: 0">{{ submission.filepath }}</p>
+                            <a href="{% url 'download_file' submission.id %}">下载</a></div>
                     </div>
                 </div>
+{#                todo 实现作业文件预览 #}
+{#                <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={% static 'assignment/课堂派-软件设计文档.docx' %}" #}
+{#        width="100%" height="600px" frameborder="0"></iframe>#}
+                
             </div>
         </div>
         <div style="width: 80%">
             <h3>提交作业</h3>
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" >
                 {% csrf_token %}
-                <button>提交内容</button>
-                <div class="input-group flex-nowrap" style="margin-top: 1%">
-{#                   todo 样式看看能不能修改 不能就算了  提交作业成功之后弹窗,点击确定后刷新界面，下面的内容变成“作业已提交 等待老师批阅” 或者跳转到其他界面#}
-                    <input type="file" class="form-control" aria-label="title" aria-describedby="addon-wrapping" name="filepath">
-                </div>
+                <button>提交修改</button>
+                <input type="number" name="grade" placeholder="评分">
                 <div class="input-group" style="margin-top: 1%;height: 120px">
-                    <span class="input-group-text">作业描述（选填）</span>
-                    <textarea class="form-control" aria-label="With textarea" name="message"></textarea>
+                    
+                    <span class="input-group-text">老师评语（选填）</span>
+                    <textarea class="form-control" aria-label="With textarea" name="feedback"></textarea>
                 </div>
             </form>
 
@@ -48,6 +49,10 @@
         </div>
     </div>
 {% endblock %}
+
+
+
+
 
 {% block js %}
     <script src="{% static 'js/bootstrap.bundle.js' %}"></script>

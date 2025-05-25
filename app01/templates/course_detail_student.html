@@ -1,6 +1,6 @@
 {% extends 'layout_logined.html' %}
 {% load static %}
-
+{% now "Y-m-d H:i" as current_time %} 
 {% block title %}
     <title>课堂派-查看课程</title>
 {% endblock %}
@@ -8,9 +8,7 @@
 {% endblock %}
 {% block content %}
     {#    展示具体谋课程的信息#}
-    {#    在 Bootstrap中，col类默认将一行等分为12份，如果想一行放4个 div，那么每个 div 应该占据 3 份，即使用col-3类 #}
     <div class="container text-center" style=" width: 80%">
-        {#        border: #0f5132 solid 2px;#}
         <div class="row gy-5" style="border: red solid 0px" >
 
             <div class="card" style="width: 100%;background-image: url('//assets.ketangpai.com/theme/min/01.jpg'); background-size: cover; opacity: 0.8; ">
@@ -18,6 +16,7 @@
                 <p style="margin-left: 2%; text-align: left; color: white;font-size: large"> {{ course.course_class }}</p>
                 <div style="text-align: left">
                     <p style="display: inline-block;margin-left: 2%;margin-top: 4%; text-align: left; color: white;font-size: large; width: 16%">课程码：{{ course.id }}</p>
+                    {#                    todo 点击人数跳出弹窗显示选课名单#}
                     <a href="#" style="display: inline-block;margin-left: 2%;text-decoration: none; color: white;font-size: large;width: 20%">已有 {{ students|length }} 人加入</a>
 
                 </div>
@@ -75,12 +74,11 @@
                                     {#                                    课程进度显示、添加章节等   background: #75b798 #}
                                     <div>
                                         <span>共 {{ chapters|length }} 个章节</span>
-                                     </div>
+                                    </div>
 
-                                    
+
                                 </div>
                                 <div style="width: 100%; ">
-{#                                    章节的列表展示 一块一块  background: #6ea8fe#}
                                     {% for aChapter in chapters %}
                                         <div class="card" style="margin-top: 1%">
                                             <div class="card-header" style="color: #5c636a;font-size: large;font-weight: bolder">
@@ -107,59 +105,60 @@
                                 </div>
                                 <div>
                                     {% for assignment in assignments %}
-                                    <div class="list-group-item list-group-item-action p-3 mb-2 border rounded-3 shadow-sm">
-                                        <div class="row align-items-center">
-                                            <!-- 左侧图标 -->
-                                            <div class="col-1 text-center">
-                                                <i class="bi bi-file-earmark-text fs-3
+                                        <div class="list-group-item list-group-item-action p-3 mb-2 border rounded-3 shadow-sm">
+                                            <div class="row align-items-center">
+                                                <!-- 左侧图标 -->
+                                                <div class="col-1 text-center">
+                                                    <i class="bi bi-file-earmark-text fs-3
                                                    text-primary"></i>
-                                                <li class="list-unstyled">
-                                                  <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-                                                  <span class="glyphicon-class" style="color: black">作业</span>
-                                                </li>
+                                                    <li class="list-unstyled">
+                                                        <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                                                        <span class="glyphicon-class" style="color: black">作业</span>
+                                                    </li>
 
-                                            </div>
-                                            <!-- 主要内容区域 -->
-                                            <div class="col-8">
-                                                <div class="d-flex flex-column">
-                                                    <a href="#" class="mb-1" style="color: black;text-decoration: none;cursor: pointer">{{ assignment.title }}</a>
+                                                </div>
+                                                <!-- 主要内容区域 -->
+                                                <div class="col-8">
+                                                    <div class="d-flex flex-column">
+                                                        <a href="#" class="mb-1" style="color: black;text-decoration: none;cursor: pointer">{{ assignment.title }}</a>
 
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <small class="text-muted">
-                                                            <i class="bi bi-clock"></i>
-                                                            提交截止时间：{{ assignment.due_date|date:"y/m/d H:i"}}
-                                                        </small>|
-                                                        <span class="badge bg-success">
-                                                            <!--todo 写一个逻辑判断当前时间是否超出截止时间-->
-                                                            {{ assignment.get_status_display }}
-                                                            进行中
-                                                        </span>
-                                                    </div>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <small class="text-muted">
+                                                                <i class="bi bi-clock"></i>
+                                                                提交截止时间：{{ assignment.due_date|date:"y/m/d H:i"}}
+                                                            </small>|                                                     
+                                                            {% if assignment.due_date < current_time %}
+                                                                <span  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">进行中</span>
+                                                            {% else %}
+                                                                 <span  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">已过期</span>
+                                                            {% endif %}
+                                                        </div>
 
-                                                    <div class="mt-1">
-                                                        <span class="badge bg-info">个人作业</span>
-                                                        <small class="text-muted ms-2">
-                                                            <i class="bi bi-person-check"></i>
-                                                              已提交
-                                                        </small>
+                                                        <div class="mt-1">
+                                                            <span class="badge bg-info">{{ assignment.get_type_display }}</span>
+                                                            <small class="text-muted ms-2">
+                                                                <i class="bi bi-person-check"></i>
+                                                                已提交
+                                                            </small>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <!-- 右侧操作按钮 -->
-                                            <div class="col-3 text-end">
-                                                <a href="#"
-                                                   class="btn btn-primary">
+                                                <!-- 右侧操作按钮 -->
+                                                <div class="col-3 text-end">
+
+                                                    <a href="{% url 'assignment_detail_student' assignment.id user.account %}"
+                                                       class="btn btn-primary">
                                                         <i class="bi bi-upload"></i> 提交作业
-            {#                                        {% if assignment.is_submitted %}#}
-            {#                                        <i class="bi bi-pencil-square"></i> 查看提交#}
-            {#                                        {% else %}#}
-            {#                                        <i class="bi bi-upload"></i> 提交作业#}
-            {#                                        {% endif %}#}
-                                                </a>
+                                                        {#                                        {% if assignment.is_submitted %}#}
+                                                        {#                                        <i class="bi bi-pencil-square"></i> 查看提交#}
+                                                        {#                                        {% else %}#}
+                                                        {#                                        <i class="bi bi-upload"></i> 提交作业#}
+                                                        {#                                        {% endif %}#}
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                     {% endfor %}
                                 </div>
                             </div>
@@ -179,64 +178,64 @@
 
                     </div>
                     <div class="tab-pane fade" id="choice2-tab-pane" role="tabpanel" aria-labelledby="choice2-tab" tabindex="0" style="padding: 4%; text-align: center;margin-top: 4%">
-                         <img src="{% static "img/img_empty.png" %}">
+                        <img src="{% static "img/img_empty.png" %}">
                     </div>
                     <div class="tab-pane fade" id="choice3-tab-pane" role="tabpanel" aria-labelledby="choice3-tab" tabindex="0" style="padding: 4%; text-align: center;margin-top: 4%">
-                         <img src="{% static "img/img_empty.png" %}">
+                        <img src="{% static "img/img_empty.png" %}">
                     </div>
                     <div class="tab-pane fade" id="choice4-tab-pane" role="tabpanel" aria-labelledby="choice4-tab" tabindex="0" style="padding: 4%; text-align: center;margin-top: 4%">
-                         <!-- 基本信息面板 -->
-                                <div class="tab-pane fade show active"
-                                     id="pane-basicInfo"
-                                     role="tabpanel"
-                                     aria-labelledby="tab-basicInfo"
-                                     style="background-color: rgba(0,0,0,0.03)">
-                                    <div class="container-fluid p-4">
-                                        <!-- 标题区 -->
-                                        <div class="d-flex justify-content-between align-items-center mb-4" style="color: black" >
-                                            <h5 class="fw-bold mb-0">基本信息</h5>
-                                        </div>
+                        <!-- 基本信息面板 -->
+                        <div class="tab-pane fade show active"
+                             id="pane-basicInfo"
+                             role="tabpanel"
+                             aria-labelledby="tab-basicInfo"
+                             style="background-color: rgba(0,0,0,0.03)">
+                            <div class="container-fluid p-4">
+                                <!-- 标题区 -->
+                                <div class="d-flex justify-content-between align-items-center mb-4" style="color: black" >
+                                    <h5 class="fw-bold mb-0">基本信息</h5>
+                                </div>
 
-                                        <!-- 表单区 -->
-                                        <form class="border p-4 rounded-3" style="background-color: white;margin: 15px">
-                                            <!-- 课程名称 -->
-                                            <div class="row mb-3 align-items-center">  <!-- 添加垂直居中对齐 -->
-                                                <label class="col-form-label col-2 text-end text-secondary"> <!-- 使用Bootstrap颜色类 -->
-                                                    课程名称
-                                                </label>
-                                                <div class="col-10">
+                                <!-- 表单区 -->
+                                <form class="border p-4 rounded-3" style="background-color: white;margin: 15px">
+                                    <!-- 课程名称 -->
+                                    <div class="row mb-3 align-items-center">  <!-- 添加垂直居中对齐 -->
+                                        <label class="col-form-label col-2 text-end text-secondary"> <!-- 使用Bootstrap颜色类 -->
+                                            课程名称
+                                        </label>
+                                        <div class="col-10">
                                                     <span class="form-control-plaintext text-dark"> <!-- 明确设置黑色 -->
                                                        {{course.name }}
                                                     </span>
-                                                </div>
-                                            </div>
+                                        </div>
+                                    </div>
 
-                                            <!-- 教学班级 -->
-                                            <div class="row mb-3 align-items-center">
-                                                <label class="col-form-label col-2 text-end text-secondary">
-                                                    教学班级
-                                                </label>
-                                                <div class="col-10">
+                                    <!-- 教学班级 -->
+                                    <div class="row mb-3 align-items-center">
+                                        <label class="col-form-label col-2 text-end text-secondary">
+                                            教学班级
+                                        </label>
+                                        <div class="col-10">
                                                     <span class="form-control-plaintext text-dark">
                                                         {{ course.course_class }}
                                                     </span>
-                                                </div>
-                                            </div>
-
-                                            <!-- 学年学期 -->
-                                            <div class="row mb-3 align-items-center">
-                                                <label class="col-form-label col-2 text-end text-secondary">
-                                                    学年-学期
-                                                </label>
-                                                <div class="col-10">
-                                                    <p class="form-control-plaintext text-dark mb-0"> <!-- 保持段落对齐 -->
-                                                        {{ course.year }}-{{ course.term }}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </form>
+                                        </div>
                                     </div>
-                                </div>
+
+                                    <!-- 学年学期 -->
+                                    <div class="row mb-3 align-items-center">
+                                        <label class="col-form-label col-2 text-end text-secondary">
+                                            学年-学期
+                                        </label>
+                                        <div class="col-10">
+                                            <p class="form-control-plaintext text-dark mb-0"> <!-- 保持段落对齐 -->
+                                                {{ course.year }}-{{ course.term }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">5</div>
                 </div>
@@ -287,6 +286,21 @@
                 });
                 this.classList.add('active');
             });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            {% for assignment in assignments %}
+                (function() { // 立即执行函数表达式（IIFE）创建独立作用域
+                    const dueDateStr = "{{ assignment.due_date|date:'Y-m-d H:i' }}";
+                    const dueDate = new Date(dueDateStr.replace(' ', 'T') + ':00Z');
+                    const now = new Date();
+                    now.setSeconds(0);
+                    now.setMilliseconds(0);
+
+                    const statusElement = document.getElementById('status-{{ assignment.id }}');
+                    statusElement.textContent = now > dueDate ? '已过期' : '进行中';
+                })(); // 闭合 IIFE
+            {% endfor %}
         });
 
     </script>

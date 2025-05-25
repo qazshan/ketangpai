@@ -59,4 +59,5 @@ htmlcov/
 .tox/
 
 app01/static/assignment
+app01/static/submission
 myProject1/settings.py
