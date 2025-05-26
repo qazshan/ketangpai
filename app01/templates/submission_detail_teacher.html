@@ -1,7 +1,7 @@
 {% extends "layout_logined.html" %}
-{% load static %}
+
 {% block css %}
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .toggle-switch {
             width: 60px;
@@ -66,33 +66,33 @@
         }
     </style>
     <style>
-        /* 自定义样式 */
-        .main-wrapper {
-            width: 80% !important;         /* 设置主体宽度 */
-            max-width: 1600px;             /* 最大宽度限制 */
-            margin: 0 auto;                /* 水平居中 */
-            min-height: 100vh;             /* 保持最小高度 */
-            display: flex;
-            flex-direction: column;        /* 保持原有布局结构 */
-        }
+    /* 自定义样式 */
+    .main-wrapper {
+      width: 80% !important;         /* 设置主体宽度 */
+      max-width: 1600px;             /* 最大宽度限制 */
+      margin: 0 auto;                /* 水平居中 */
+      min-height: 100vh;             /* 保持最小高度 */
+      display: flex;
+      flex-direction: column;        /* 保持原有布局结构 */
+    }
 
-        /* 响应式调整 */
-        @media (max-width: 768px) {
-            .main-wrapper {
-                width: 95% !important;       /* 小屏幕加宽显示区域 */
-            }
-        }
-        .table th {
-            background-color: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
-        }
-        .table-hover tbody tr:hover {
-            background-color: rgba(13, 110, 253, 0.05);
-        }
-        .badge {
-            font-weight: 500;
-            padding: 0.35em 0.65em;
-        }
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+      .main-wrapper {
+        width: 95% !important;       /* 小屏幕加宽显示区域 */
+      }
+    }
+    .table th {
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #dee2e6;
+    }
+    .table-hover tbody tr:hover {
+        background-color: rgba(13, 110, 253, 0.05);
+    }
+    .badge {
+        font-weight: 500;
+        padding: 0.35em 0.65em;
+    }
     </style>
 {% endblock %}
 {% block content %}
@@ -125,8 +125,9 @@
                                 <span class="ms-2">对学生展示成绩</span>
                             </div>
 
+                            <!-- 下载链接 -->
                             <a href="#" class="text-decoration-none d-flex align-items-center">
-                                <i class="bi bi-download me-1"></i>
+                                <i class="bi bi-download me-1"></i> <!-- 建议使用下载图标 -->
                                 下载作业报表
                             </a>
                         </div>
@@ -151,8 +152,8 @@
                     <!-- 右边搜索框 -->
                     <div class="col-md-4 ms-auto">
                         <div class="input-group w-100">
-                            <input type="text" class="form-control" placeholder="学生姓名搜索" name="student_name">
-                            <button class="btn btn-outline-secondary" type="button" name="search">
+                            <input type="text" class="form-control" placeholder="学生姓名搜索">
+                            <button class="btn btn-outline-secondary" type="button">
                                 <i class="bi bi-search"></i>
                             </button>
                         </div>
@@ -163,95 +164,101 @@
         <!--下块儿-->
         <div>
             <div class="container-fluid p-4">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-light">
-                        <tr>
-                            <th>姓名/学号</th>
-                            <th>所属标签</th>
-                            <th>相似度</th>
-                            <th>提交状态</th>
-                            <th>字数</th>
-                            <th>批阅次数</th>
-                            <th>成绩</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <!--首次渲染默认全部学生-->
-                        {% for student in students %}
-                            <tr id="all">
-                                <td>
-                                    <div class="d-flex flex-column">
-                                        <span class="fw-semibold">{{ student.name }}</span>
-                                        <span class="text-muted fs-8 mt-1">{{ student.serial_number }}</span>
-                                    </div>
-                                </td>
-                                <td><span class="badge bg-secondary"></span></td>
-                                <td style="">-</td>
-
-                                <td>
-                                    {% if student.account in submited_students %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>姓名/学号</th>
+                    <th>所属标签</th>
+                    <th>相似度</th>
+                    <th>提交状态</th>
+                    <th>字数</th>
+                    <th>批阅次数</th>
+                    <th>成绩</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            <!--todo 添加一个for循环，遍历学生作业信息-->
+            <!--全部作业-->
+            {% for student in students %}
+                <tr id="all">
+                    <!--todo 将姓名改成数据库中对应学生姓名和学号-->
+                    <td>
+                        <div class="d-flex flex-column">
+                            <span class="fw-semibold">{{ student.name }}</span>
+                            <span class="text-muted fs-8 mt-1">{{ student.serial_number }}</span>
+                        </div>
+                    </td>
+                    <td><span class="badge bg-secondary"></span></td>
+                    <td>-</td>
+                    <td>
+                        <!--todo 将默认已提交修改为数据库中对应状态，时间也修改为对应状态-->
+                        {% if student.account in submited_students %}
                                         <span class="text-success">✔ 已提交</span>
                                         {% for submission in submissions %}
                                             {% if student.account == submission.student.account %}
                                                 <div class="text-muted small">{{ submission.submitted_at }}</div>
                                             {% endif %}
                                         {% endfor %}
-                                    {% else %}
-                                        <span class="text-false">未提交</span>
-                                    {% endif %}
+                        {% else %}
+                            <span class="text-false">未提交</span>
+                        {% endif %}
+                    </td>
+                    <!--todo 修改为正确的作业字数和批阅次数-->
+                    <td>-</td>
+                    <td>-</td>
+                        <!-- HTML模板部分 -->
+                    <td class="editable-score">
+                        <!-- 未批改状态 -->
+                        <!--todo data_id修改为学生对应的id-->
 
-                                </td>
-                                <!--todo 修改为正确的作业字数和批阅次数-->
-                                <td>-</td>
-                                <td> </td>
-                                <td class="editable-score">
-                                    <!-- 已批改状态 -->
-                                    <div class="scored d-none d-flex align-items-center gap-2">
-                                        <span class="badge bg-success">85</span>
-                                        <span class="text-muted small">/100</span>
-                                    </div>
-
-                                    <!-- 未批改状态 -->
-                                    <!--todo data_id修改为学生对应的id-->
-                                    <div class="editable-wrapper d-flex align-items-center gap-2" data-id="123">
-                                        <input type="number"
-                                               class="form-control score-input"
-                                               min="0"
-                                               max="100"
-                                               style="width: 80px"
-                                               placeholder="未批">
-                                        <span class="text-muted small">/100</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    {% for submission in submissions %}
-                                            {% if student.account == submission.student.account %}
-                                                <a href="{% url 'a_submission_detail' user.account assignment.id submission.id  %}" class="btn btn-link btn-sm">进入批阅</a>
-{#                                            {% else %}#}
-{#                                                <a href="#" class="btn btn-link btn-sm">催交作业</a>#}
-                                            {% endif %}
-                                            
-                                        {% endfor %}
-                                    
-                                </td>
-                            </tr>
+                        <div class="editable-wrapper d-flex align-items-center gap-2" data-id="{{ user.account }}">
+                            {% for submission in submissions %}
+                            {% if submission.student.account == student.account %}
+                                {% if submission.grade %}
+                                    <input type="number"
+                                   class="form-control score-input"
+                                   min="0"
+                                   max="100"
+                                   style="width: 80px"
+                                   placeholder="{{ submission.grade }}">
+                                {% else %}
+                                    <input type="number"
+                                   class="form-control score-input"
+                                   min="0"
+                                   max="100"
+                                   style="width: 80px"
+                                   placeholder="未批">
+                                {% endif %}
+                            {% endif %}
+                            {% empty %}
+                            <input type="number" class="form-control score-input" min="0" max="100" style="width: 80px" placeholder="未批">
                         {% endfor %}
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                            <span class="text-muted small">/100</span>
+                        </div>
+                    </td>
+                    <td>
+                        <!--todo 显示作业-->
+                        {% for submission in submissions %}
+                        {% if student.account == submission.student.account %}
+                        <a href="{% url 'a_submission_detail' user.account assignment.id submission.id  %}" class="btn btn-link btn-sm">进入批阅</a>
+                        {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
         </div>
     </div>
 {% endblock %}
 {% block js %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    {#    <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>#}
-    <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
         // 切换按钮功能
         document.getElementById('toggleSwitch').addEventListener('click', function() {
@@ -294,7 +301,7 @@
 
         // 修改后的submitScore函数
         function submitScore(input) {
-            const wrapper = input.closest('.editable-wrapper');
+            const wrapper = input.closest('.editable-wrapper');//遍历上层父级元素
             const score = parseInt(input.value);
             const studentId = wrapper.dataset.id;
 
@@ -322,30 +329,22 @@
                     assignment_id: {{ assignment.id|safe }}  // 添加作业ID
                 })
             })
-                .then(response => {
-                    if (!response.ok) throw new Error('网络错误');
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.status === 'success') {
-                        alert("修改成功！")
-                        // 切换显示状态
-                        wrapper.classList.add('d-none');
-                        const scoredDiv = wrapper.nextElementSibling;
-                        scoredDiv.classList.remove('d-none');
-                        scoredDiv.querySelector('.badge').textContent = score;
-
-                        // 更新操作按钮
-                        const actionBtn = document.querySelector(`[data-student="${studentId}"]`);
-                        if (actionBtn) {
-                            actionBtn.textContent = '重新批阅';
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('保存失败: ' + error.message);
-                });
+            .then(response => {
+                if (!response.ok) throw new Error('网络错误');
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    
+                    // 修改placeholder为当前分数
+                    input.placeholder = score;
+                    input.value=''
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('保存失败: ' + error.message);
+            });
         }
 
         // 获取CSRF token的辅助函数

@@ -37,7 +37,11 @@
             <form method="post" >
                 {% csrf_token %}
                 <button>提交修改</button>
-                <input type="number" name="grade" placeholder="评分">
+                {% if submission.grade %}
+                    <input type="number" name="grade" placeholder="{{ submission.grade }}">
+                {% else %}
+                    <input type="number" name="grade" placeholder="评分">
+                {% endif %}
                 <div class="input-group" style="margin-top: 1%;height: 120px">
                     
                     <span class="input-group-text">老师评语（选填）</span>
@@ -49,10 +53,6 @@
         </div>
     </div>
 {% endblock %}
-
-
-
-
 
 {% block js %}
     <script src="{% static 'js/bootstrap.bundle.js' %}"></script>

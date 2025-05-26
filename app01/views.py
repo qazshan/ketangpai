@@ -268,12 +268,14 @@ def submission_detail_teacher(request,user_account,assignment_id):
         if submission.student in students:
             submited_students.append(submission.student.account)
     if request.method == "POST":
-        # ？id？是js处理之后得到的？js我其实也没看懂
         student_id = request.POST.get('student_id')
         score = request.POST.get('score')
         if student_id and score:
             # todo 这里需要添加一个save逻辑，否则会跳出一个保存失败，建议调试的时候把下面的else返回那行注释掉
-            print(student_id,score)
+            print(student_id, score)
+            for submission in submissions:
+                if submission.student.account==student_id:
+                    models.Submission.objects.filter(id=submission.id).update(grade=score)
             return JsonResponse({'status': 'success', 'message': '成绩修改成功！'})
         else:
             return JsonResponse({'status': 'error', 'message': '成绩丢失或学生ID不存在！'}, status=400)

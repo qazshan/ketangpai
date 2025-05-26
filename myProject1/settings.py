@@ -102,7 +102,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ketangpai',
         'USER': 'root',
-        'PASSWORD': '1234',
+        'PASSWORD': '031128',
         'HOST': '127.0.0.1',    #安装了MySQL的机器
         'POST': 3306,
     }
