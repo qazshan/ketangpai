@@ -79,7 +79,8 @@
 
 
                                 </div>
-                                <div style="width: 100%; ">
+                                <div class="p-3" style="width: 96%;margin-left: 2% ">
+                                    {#章节的列表展示 一块一块  background: #6ea8fe#}
                                     {% for aChapter in chapters %}
                                         <div class="card" style="margin-top: 1%">
                                             <div class="card-header" style="color: #5c636a;font-size: large;font-weight: bolder">
@@ -88,6 +89,7 @@
                                             <div class="card-body">
                                                 <blockquote class="blockquote mb-0" style="color: #5c636a">
                                                     <p>{{ aChapter.content }}</p>
+                                                    {#                                                    <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>#}
                                                 </blockquote>
                                             </div>
                                         </div>
@@ -128,10 +130,10 @@
                                                                 <i class="bi bi-clock"></i>
                                                                 提交截止时间：{{ assignment.due_date|date:"y/m/d H:i"}}
                                                             </small>|
-                                                            {% if assignment.due_date < current_time %}
+                                                            {% if assignment.get_status_display == "进行中"%}
                                                                 <span  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" style="color: darkgreen">进行中</span>
                                                             {% else %}
-                                                                <span  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" style="color: darkred">已过期</span>
+                                                                <span  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" style="color: darkred">已结束</span>
                                                             {% endif %}
                                                         </div>
 

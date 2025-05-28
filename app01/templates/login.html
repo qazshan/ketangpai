@@ -1,6 +1,25 @@
 {% extends 'layout.html' %}
 {% load static %}
 {% block content %}
+    <!-- 错误提示模态框 -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">登录错误</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>
+                    <span id="errorMessage"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <main class="container bg-white p-3 rounded" style="display: flex;align-items: center">
         <div style="display: inline-block; width: 60%;margin-left: 2%;margin-top: 2%;">
             <img src="{% static 'img/newbg.png' %}" style="width: 100%; height: auto" >
@@ -33,5 +52,14 @@
             </form>
         </div>
     </main>
-
+    <script>
+        // 显示错误弹窗的逻辑
+        document.addEventListener('DOMContentLoaded', function() {
+            {% if error %}
+                const errorModal = new bootstrap.Modal(document.getElementById('errorModal'))
+                document.getElementById('errorMessage').textContent = "{{ error }}"
+                errorModal.show()
+            {% endif %}
+        })
+    </script>
 {% endblock %}

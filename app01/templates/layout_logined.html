@@ -13,7 +13,7 @@
 {#ctrl + alt + i 调整格式 #}
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+    <a href="#" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <img src="{% static 'img/logo_blue.png' %}" alt="" height="30" style="margin-left: 10%;">
             </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,8 +44,10 @@
   </div>
 </nav>
 {% block content %}{% endblock %}
-{% block js %}{% endblock %}
-{#<script src="{% static 'js/bootstrap.bundle.js' %}"></script>#}
-{#<script src="{% static 'css/bootstrap.min.css' %}"></script>#}
+{% block js %}
+    <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+<script src="{% static 'css/bootstrap.min.css' %}"></script>
+{% endblock %}
+
 </body>
 </html>

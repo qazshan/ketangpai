@@ -1,19 +1,14 @@
+{% extends "layout_logined.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-</head>
-<body>
-<form style="width: 60%; margin-left: 20%" method="post">
+{% block content %}
+<body style="">
+<form style="width: 60%; margin-left: 20%;margin-top: 45px" method="post">
     {% csrf_token %}
     <div class="p-3 py-4 mb-2 bg-light rounded"> 创建课程
     </div>
     <div class="mb-3">
         <label for="course_name" class="form-label">课程名称</label>
-        {#      设为必填项 未填写则在提交是旁边出现红色提示#}
+{#              设为必填项 未填写则在提交是旁边出现红色提示#}
         <input type="text" class="form-control" id="course_name" name="name">
     </div>
     <div class="mb-3">
@@ -38,10 +33,6 @@
         </select>
     </div>
 
-    {#    <div class="mb-3 form-check">#}
-    {#        <input type="checkbox" class="form-check-input" id="exampleCheck1">#}
-    {#        <label class="form-check-label" for="exampleCheck1">Check me out</label>#}
-    {#    </div>#}
     <div class="form-check mb-3">
 {#身份。radio-group 优化修改：添加图标#}
                 <div style="display: inline-block">
@@ -65,9 +56,247 @@
         <span class="input-group-text">课程简介</span>
         <textarea class="form-control" aria-label="With textarea" name="introduction"></textarea>
     </div>
-    <button type="submit" class="btn btn-primary" style="margin-top: 20px">点击创建</button>
+{#    <button type="submit" class="btn btn-primary" style="margin-top: 20px">点击创建</button>#}
+        <!-- 操作按钮 -->
+    <div class="d-flex justify-content-center gap-3 mt-4">
+        <button type="button" class="btn btn-outline-secondary px-4" onclick="history.back()">取消</button>
+        <button type="submit" class="btn btn-primary px-4">确认</button>
+    </div>
 </form>
 <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
 <script src="{% static 'css/bootstrap.min.css' %}"></script>
 </body>
 </html>
+{% endblock %}
+{#{% load static %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>创建课程</title>#}
+{#    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">#}
+{#    <style>#}
+{#        .required:after {#}
+{#            content: "*";#}
+{#            color: red;#}
+{#            margin-left: 4px;#}
+{#        }#}
+{#        .invalid-feedback {#}
+{#            color: #dc3545;#}
+{#            display: none;#}
+{#            margin-top: 0.25rem;#}
+{#            font-size: 0.875em;#}
+{#        }#}
+{#        /* 移除原有.form-select-sm的宽度设置 */#}
+{#        .form-select {#}
+{#            width: 100% !important; /* 让选择框充满父容器 */#}
+{#        }#}
+{#        /* 调整整体布局间距 */#}
+{#        .d-flex.gap-3 {#}
+{#            gap: 1rem !important; /* 控制两个选择框之间的间距 */#}
+{#        }#}
+{#    </style>#}
+{#</head>#}
+{#<body>#}
+{#<form id="createForm" style="width: 60%; margin-left: 20%" method="post" novalidate>#}
+{#        {% if error %}#}
+{#    <div class="alert alert-danger alert-dismissible fade show" role="alert">#}
+{#      {{ error }}#}
+{#      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>#}
+{#    </div>#}
+{#    {% endif %}#}
+{#    {% csrf_token %}#}
+{##}
+{#    <div class="p-3 py-4 mb-2 bg-light rounded">创建课程</div>#}
+{##}
+{#    <!-- 课程名称 -->#}
+{#    <div class="mb-3">#}
+{#        <label for="course_name" class="form-label required">课程名称</label>#}
+{#        <input type="text" class="form-control" id="course_name" name="name" required>#}
+{#        <div class="invalid-feedback">请输入课程名称</div>#}
+{#    </div>#}
+{##}
+{#    <!-- 教学班级 -->#}
+{#    <div class="mb-3">#}
+{#        <label for="course_class" class="form-label required">教学班级</label>#}
+{#        <input type="text" class="form-control" id="course_class" name="course_class" required>#}
+{#        <div class="invalid-feedback">请输入教学班级</div>#}
+{#    </div>#}
+{##}
+{##}
+{#    <!-- 学年学期 -->#}
+{#    <!-- 修改学年学期部分 -->#}
+{#<div class="mb-3">#}
+{#    <label class="form-label required">学年学期</label>#}
+{#    <div class="row g-3 align-items-start">  <!-- 改为顶部对齐 -->#}
+{#        <div class="col-md-6">#}
+{#            <select class="form-select" id="course_year" name="year" required>#}
+{#                <option value="">请选择学年</option>#}
+{#                <option value="1">2026-2027</option>#}
+{#                <option value="2">2025-2026</option>#}
+{#                <option value="3">2024-2025</option>#}
+{#                <option value="4">2023-2024</option>#}
+{#            </select>#}
+{#            <div class="invalid-feedback">请选择学年</div>#}
+{#        </div>#}
+{#        <div class="col-md-6">#}
+{#            <select class="form-select" id="course_term" name="term" required>#}
+{#                <option value="">请选择学期</option>#}
+{#                <option value="1">1</option>#}
+{#                <option value="2">2</option>#}
+{#                <option value="3">3</option>#}
+{#            </select>#}
+{#            <div class="invalid-feedback">请选择学期</div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+{##}
+{#    <!-- 教学模式 -->#}
+{#    <div class="form-check mb-4">#}
+{#        <div class="d-flex gap-4">#}
+{#            <div>#}
+{#                <input type="radio" id="m1" name="mode" value="1" class="form-check-input" required>#}
+{#                <label for="m1" class="form-check-label">混合模式</label>#}
+{#            </div>#}
+{#            <div>#}
+{#                <input type="radio" id="m2" name="mode" value="2" class="form-check-input">#}
+{#                <label for="m2" class="form-check-label">线上课程</label>#}
+{#            </div>#}
+{#            <div>#}
+{#                <input type="radio" id="m3" name="mode" value="3" class="form-check-input">#}
+{#                <label for="m3" class="form-check-label">线下课程</label>#}
+{#            </div>#}
+{#            <div>#}
+{#                <input type="radio" id="m4" name="mode" value="4" class="form-check-input">#}
+{#                <label for="m4" class="form-check-label">其他</label>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{#    <!-- 课程简介 -->#}
+{#    <div class="input-group mb-4">#}
+{#        <span class="input-group-text">课程简介</span>#}
+{#        <textarea class="form-control" aria-label="With textarea" name="introduction"></textarea>#}
+{#    </div>#}
+{##}
+{#    <!-- 操作按钮 -->#}
+{#    <div class="d-flex justify-content-center gap-3 mt-4">#}
+{#        <button type="button" class="btn btn-outline-secondary px-4" onclick="history.back()">取消</button>#}
+{#        <button type="submit" class="btn btn-primary px-4">确认</button>#}
+{#    </div>#}
+{#</form>#}
+{##}
+{#<script src="{% static 'js/bootstrap.bundle.js' %}"></script>#}
+{#<script>#}
+{#    // 表单验证逻辑#}
+{#    const form = document.getElementById('createForm');#}
+{#    const requiredFields = [#}
+{#        '#course_name',#}
+{#        '#course_class',#}
+{#        '#course_year',#}
+{#        '#course_term',#}
+{#        'input[name="mode"]:checked'#}
+{#    ];#}
+{##}
+{#    // 实时验证#}
+{#    form.addEventListener('input', function(e) {#}
+{#        const field = e.target;#}
+{#        if (field.matches('.form-control, .form-select, [name="mode"]')) {#}
+{#            validateField(field);#}
+{#        }#}
+{#    });#}
+{##}
+{#    // 提交验证#}
+{#    form.addEventListener('submit', function(e) {#}
+{#        let isValid = true;#}
+{##}
+{#        requiredFields.forEach(selector => {#}
+{#            const field = document.querySelector(selector);#}
+{#            if (!field || (field.type === 'radio' && !document.querySelector('[name="mode"]:checked'))) {#}
+{#                isValid = false;#}
+{#                showValidationError(field);#}
+{#            } else {#}
+{#                isValid = validateField(field) && isValid;#}
+{#            }#}
+{#        });#}
+{##}
+{#        if (!isValid) {#}
+{#            e.preventDefault();#}
+{#            e.stopPropagation();#}
+{#        }#}
+{#    });#}
+{##}
+{#    function validateField(field) {#}
+{#        if (!field) return false;#}
+{##}
+{#        const isValid = field.checkValidity();#}
+{#        const parent = field.closest('.mb-3, .col-md-6, .form-check');#}
+{##}
+{#        if (isValid) {#}
+{#            field.classList.remove('is-invalid');#}
+{#            if (parent) parent.querySelector('.invalid-feedback').style.display = 'none';#}
+{#        } else {#}
+{#            showValidationError(field);#}
+{#        }#}
+{##}
+{#        return isValid;#}
+{#    }#}
+{##}
+{#    function showValidationError(field) {#}
+{#        const parent = field.closest('.mb-3, .col-md-6, .form-check');#}
+{#        field.classList.add('is-invalid');#}
+{#        if (parent) parent.querySelector('.invalid-feedback').style.display = 'block';#}
+{#    }#}
+{##}
+{#    // 增强验证逻辑#}
+{#    function validateForm() {#}
+{#        let isValid = true;#}
+{##}
+{#        // 清除旧错误提示#}
+{#        document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));#}
+{#        document.querySelectorAll('.invalid-feedback').forEach(el => el.style.display = 'none');#}
+{#        document.getElementById('serverError').classList.add('d-none');#}
+{##}
+{#        // 验证文本输入#}
+{#        ['#course_name', '#course_class'].forEach(selector => {#}
+{#            const field = document.querySelector(selector);#}
+{#            if (!field.value.trim()) {#}
+{#                showValidationError(field);#}
+{#                isValid = false;#}
+{#            }#}
+{#        });#}
+{##}
+{#        // 验证下拉选择#}
+{#        ['#course_year', '#course_term'].forEach(selector => {#}
+{#            const field = document.querySelector(selector);#}
+{#            if (field.value === "") {#}
+{#                showValidationError(field);#}
+{#                isValid = false;#}
+{#            }#}
+{#        });#}
+{##}
+{#        // 验证单选按钮#}
+{#        if (!document.querySelector('[name="mode"]:checked')) {#}
+{#            document.querySelectorAll('[name="mode"]').forEach(radio => {#}
+{#                radio.closest('.form-check').querySelector('.invalid-feedback').style.display = 'block';#}
+{#            });#}
+{#            isValid = false;#}
+{#        }#}
+{##}
+{#        return isValid;#}
+{#    }#}
+{#    // 修改表单提交事件监听器#}
+{#    form.addEventListener('submit', function(e) {#}
+{#        e.preventDefault();#}
+{##}
+{#        // 执行完整验证#}
+{#        if (!validateForm()) {#}
+{#            return;#}
+{#        }#}
+{##}
+{#        // 手动提交表单（绕过preventDefault）#}
+{#        this.submit();#}
+{#    });#}
+{#</script>#}
+{#</body>#}
+{#</html>#}

@@ -107,7 +107,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div style="width: 100%; ">
+                                <div class="p-3" style="width: 96%;margin-left: 2% ">
                                     {#章节的列表展示 一块一块  background: #6ea8fe#}
                                     {% for aChapter in chapters %}
                                         <div class="card" style="margin-top: 1%">
@@ -129,7 +129,7 @@
                                 <img src="{% static "img/img_empty.png" %}">
                             </div>
 
-                            <div class="tab-pane fade" id="pills-cc3" role="tabpanel" aria-labelledby="pills-ccc3-tab" tabindex="0" style="padding: 4%; text-align: center;height: 200px;color: black">
+                            <div class="tab-pane fade" id="pills-cc3" role="tabpanel" aria-labelledby="pills-ccc3-tab" tabindex="0" style="padding: 4%; text-align: center;color: black;border: 1px solid #ddd">
                                 <div>
                                     <span>共 {{ assignments|length }} 个作业</span>
                                     {#                                    todo 把id改了 对应表单及js#}
@@ -204,32 +204,38 @@
 
                                                     </div>
                                                     <!-- 主要内容区域 -->
-                                                    <div class="col-8">
-                                                        <div class="d-flex flex-column">
-                                                            <a href="/login/course_detail_teacher/submission_detail_teacher/{{ assignment.id }}" class="mb-1" style="color: black;text-decoration: none;cursor: pointer">{{ assignment.title }}</a>
-
-                                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    <div class="d-flex flex-column">
+                                                        <div class="d-flex align-items-center">
+                                                            <a href="{% url 'submission_detail_teacher' user.account assignment.id %}"
+                                                           class="mb-1 text-decoration-none text-dark">
+                                                            {{ assignment.title }}
+                                                        </a>
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="d-flex align-items-center" style="margin-right: 15px">
+                                                                <i class="bi bi-clock text-muted me-1"></i>
                                                                 <small class="text-muted">
-                                                                    <i class="bi bi-clock"></i>
-                                                                    提交截止时间：{{ assignment.due_date|date:"y/m/d H:i"}}
-                                                                </small>|
-                                                                <span class="badge bg-success">
-                                                                    <!--todo 写一个逻辑判断当前时间是否超出截止时间-->
-                                                                    {{ assignment.get_status_display }}
-                                                                    进行中
-                                                                </span>
+                                                                    提交截止时间：{{ assignment.due_date|date:"y/m/d H:i" }}
+                                                                </small>
                                                             </div>
+                                                            <div style="margin-right: 15px">|</div>
+                                                            <!--todo 写一个逻辑判断当前时间是否超出截止时间-->
+                                                                    {% if assignment.get_status_display == "已结束" %}
+                                                                        <span class="badge bg-danger">已结束</span>
+                                                                    {% else %}
+                                                                       <span class="badge bg-success">进行中</span>
+                                                                    {% endif %}
                                                         </div>
                                                     </div>
+                                                </div>
 
-                                                    <!-- 右侧操作按钮 -->
-                                                    <div class="col-3 text-end">
-{#                                                        #}
-                                                        <a href="{% url 'submission_detail_teacher' user.account assignment.id %}"
-                                                           class="btn btn-primary">
-                                                            查看作业
-                                                        </a>
-                                                    </div>
+                                                <div class="col-3 text-end">
+                                                    <a href="{% url 'submission_detail_teacher' user.account assignment.id %}"
+                                                       class="btn btn-primary">
+                                                        查看作业
+                                                    </a>
+                                                </div>
                                                 </div>
                                             </div>
                                         </div>

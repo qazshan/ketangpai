@@ -14,6 +14,7 @@
                 <div style="text-align: left">
                     <div style="display: inline-block;border: #3b82f6 1px solid;color:#3b82f6;background: #b6d4fe;padding: 2px;border-radius: 5px">{{ assignment.get_type_display }}</div>
                     <div style="display: inline-block;border: #3b82f6 1px solid;color:#3b82f6;background: #b6d4fe;padding: 2px;border-radius: 5px"> 提交截至时间：{{ assignment.due_date }}</div>
+                    <div style="display: inline-block;border: #555555 1px solid;color:#666666;background: #eeeeee;padding: 2px;border-radius: 5px">{{ assignment.get_type_display }}</div>
                 </div>
                 <div style="margin-top: 2%;border: #babbbc solid 1px;border-radius: 8px;text-align: left">
 
@@ -30,28 +31,45 @@
             </div>
         </div>
         {% if had_submitted %}
-            <div class="container px-4 text-center" style="width: 100%;background: #b6d4fe;margin-top: 3%">
-                <h3 style="font-weight: bolder">作业已提交，等待老师批阅</h3>
-                <div>
-                    <p>分数为：{{ submission.grade }}</p>
-                    <textarea disabled>{{ submission.feedback }}</textarea>
+            <div class="container px-4 py-4 bg-light rounded-3 shadow-sm mt-3">
+                <div class="row">
+                    <div class="col-8">
+                        <h5 class="text-start mb-2">老师评语</h5>
+                            {% if submission.feedback == None %}
+                                <textarea class="form-control bg-white" rows="4" disabled>暂无</textarea>
+                            {% else %}
+                                <textarea class="form-control" rows="4" disabled>{{ submission.feedback }}</textarea>
+                            {% endif %}
+                    </div>
+                    <div class="col-3 d-flex flex-column justify-content-between align-items-end mt-5">
+                        <h3 class="text-primary fw-bold">作业已提交</h3>
+                        <div class="" style="margin-right: 30px">
+                            {% if submission.grade == None%}
+                                <p class="mt-3">暂无分数</p>
+                            {% else %}
+                                <p class="mt-3">分数为：{{ submission.grade }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
-
             </div>
 
         {% else %}
-            <div style="width: 80%">
-                <h3>提交作业</h3>
+            <div class="" style="width: 100%">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <button>提交内容</button>
-                    <div class="input-group flex-nowrap" style="margin-top: 1%">
-                        {#                   todo 样式看看能不能修改 不能就算了  提交作业成功之后弹窗,点击确定后刷新界面，下面的内容变成“作业已提交 等待老师批阅” 或者跳转到其他界面#}
+                    <div class="d-flex justify-content-between align-items-center mb-4" style="margin-top: 10px;margin-bottom: 10px">
+                    <h3 class="mb-0">提交内容</h3>
+                    <button class="btn btn-primary px-4">确认提交</button>
+                    </div>
+                    <div style="border:1px solid #babbbc;border-radius: 8px">
+                    <div class="input-group flex-nowrap" style="margin-top: 3%;width:90%;margin-left: 5%">
                         <input type="file" class="form-control" aria-label="title" aria-describedby="addon-wrapping" name="filepath">
                     </div>
-                    <div class="input-group" style="margin-top: 1%;height: 120px">
+                    <div class="input-group" style="margin-top: 3%;height: 150px;width: 90%;margin-left: 5%;margin-bottom: 3%">
                         <span class="input-group-text">作业描述（选填）</span>
                         <textarea class="form-control" aria-label="With textarea" name="message"></textarea>
+                    </div>
                     </div>
                 </form>
 

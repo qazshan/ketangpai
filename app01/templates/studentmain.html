@@ -3,19 +3,36 @@
 {% block title %}
     <title>课堂派-学生端</title>
     <style>
-        /* 隐藏初始的表单 */
         #form-popup {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: white;
-            border: 1px solid #ccc;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            background: white;
+            width: 90%;
+            max-width: 450px;
             z-index: 1000;
+            animation: popupShow 0.3s ease-out;
         }
+
+        @keyframes popupShow {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -45%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        #form-popup input:focus {
+            border-color: #4e73ff !important;
+            box-shadow: 0 0 0 3px rgba(78, 115, 255, 0.15);
+            outline: none;
+        }
+
     </style>
 {% endblock %}
 {% block navbar %}
@@ -32,10 +49,6 @@
 {% block content %}
     {#    使用弹窗 输入课程id后提交即可加入课堂#}
     <div class="container overflow-hidden" style="text-align: right;margin-top: 2%">
-        <div style="display: inline-block;margin-right: 2%">
-            <button id="show-form-btn" type="button" class="btn btn-success">添加课程</button>
-        </div>
-
         <div class="col-lg-2 col-md-3 col-sm-3 col-xs-4  pull-right" style="display: inline-block">
             <form method="post" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search"  style="display: inline-block">
                 {% csrf_token %}
@@ -48,25 +61,56 @@
                 </div>
             </form>
         </div>
-
     </div>
 
 
-    <div id="form-popup">
-        <form id="my-form" method="post" action="" >
-            {% csrf_token %}
-            <label for="name">课程ID:</label>
-            <input type="text" id="name" name="course_id" required>
-            <br>
-            <button type="submit" name="add">提交</button>
-            <button type="button" id="cancel-btn">取消</button>
-        </form>
-    </div>
+    <div id="form-popup" class="rounded-3 shadow-lg">
+    <form id="my-form" method="post" action="" class="p-4">
+        {% csrf_token %}
+        <div class="mb-4">
+            <h3 class="mb-3 text-dark">加入课程</h3>
+            <label for="course_id" class="form-label text-secondary">请输入课程ID</label>
+            <input
+                type="text"
+                id="course_id"
+                name="course_id"
+                class="form-control form-control-lg"
+                placeholder="例: 123456"
+                required
+                style="border-radius: 8px; border: 2px solid #e0e0e0; transition: all 0.3s ease;"
+            >
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button
+                type="button"
+                id="cancel-btn"
+                class="btn btn-outline-secondary px-4"
+                style="border-radius: 6px;"
+            >
+                取消
+            </button>
+            <button
+                type="submit"
+                name="add"
+                class="btn btn-primary px-4"
+                style="border-radius: 6px; background: linear-gradient(135deg, #4e73ff, #395ffc); border: none;"
+            >
+                确认
+            </button>
+        </div>
+    </form>
+</div>
     {#    展示学生的课程列表#}
     {#    在 Bootstrap中，col类默认将一行等分为12份，如果想一行放4个 div，那么每个 div 应该占据 3 份，即使用col-3类 #}
-    <div class="container overflow-hidden text-center" style="border: #0f5132 solid 2px; width: 80%">
+    <div class="container overflow-hidden text-center p-4" style="border: #dddddd solid 1px; width: 80%;border-radius: 8px">
         {#        <div> </div>#}
-        <div class="row gy-5" >
+       <!-- 使用flex布局排列标签和按钮 -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <label class="m-0" style="font-size: 28px;color: #5c636a">我的课程</label>
+            <button id="show-form-btn" type="button" class="btn btn-success">加入课程</button>
+        </div>
+        <div class="row" >
             {% for obj in courses %}
                 <div class="col-4" style="">
                     <div class="card" style="width: 94%; ">

@@ -13,24 +13,24 @@ from app01 import models
 # register = template.Library()
 
 def login(request):
+    error = None
     if request.method == "POST":
-        account = request.POST['account']
-        password = request.POST['password']
-        print(account,password)
-        #todo 还有账号不存在的情况没判断 优化：逻辑判断
-        row_obj = models.User.objects.filter(account = account).first()
-        if row_obj.password:
-            if row_obj.password == password:
-                if row_obj.role == 1:
-                    return redirect('teacher_main',user_account = row_obj.account)    #todo 将user_id改成nid?
-                else:
-                    return redirect('student_main',user_account = row_obj.account)
-            else:
-                return HttpResponse("登录失败，密码错误")
+        account = request.POST.get('account')
+        password = request.POST.get('password')
+        if not account or not password:
+            error = "账号和密码不能为空"
         else:
-            return HttpResponse("账号不存在")
-    #     {'account':account,'password':password,'role':role}
-    return render(request,'login.html')
+            user = models.User.objects.filter(account=account).first()
+            if not user:
+                error = "账号不存在"
+            elif user.password != password:
+                error = "密码错误"
+            else:
+                if user.role == 1:
+                    return redirect('teacher_main', user_account=user.account)
+                else:
+                    return redirect('student_main', user_account=user.account)
+    return render(request, 'login.html', {'error': error})
 
 def register(request):
     if request.method == "POST":
@@ -98,6 +98,112 @@ def create_course(request,user_account):
         models.Course.objects.create(name=name, teacher=teacher, course_class=course_class, year=year, term=term, mode=mode, introduction=introduction)
         return redirect('teacher_main',user_account = user_account)
     return render(request, 'create_course.html')
+# def create_course(request, user_account):
+#     error_msg = None
+#     if request.method == "POST":
+#         try:
+#             # 获取并验证数据
+#             teacher = models.User.objects.get(account=user_account)
+#             name = request.POST.get('name')
+#             course_class = request.POST.get('course_class')
+#             year = request.POST.get('year')
+#             term = request.POST.get('term')
+#             mode = request.POST.get('mode')
+#             introduction = request.POST.get('introduction')
+#             print(teacher, name, course_class, year, term, mode, introduction)
+#             # 基础验证
+#             if not all([name, course_class, year, term,mode]):
+#                 error_msg = "请填写所有必填字段"
+#                 raise ValueError(error_msg)
+#             # 创建课程
+#             models.Course.objects.create(
+#                 name=name,
+#                 teacher=teacher,
+#                 course_class=course_class,
+#                 year=year,
+#                 term=term,
+#                 mode=mode,
+#                 introduction=introduction
+#             )
+#             return redirect('teacher_main', user_account=user_account)
+#         except Exception as e:
+#             if not error_msg:
+#                 error_msg = f"创建课程失败: {str(e)}"
+#     return render(request, 'create_course.html', {'error': error_msg})
+# def create_course(request, user_account):
+#     error_msg = None
+#     if request.method == "POST":
+#         try:
+#             # 获取数据并去除空白
+#             teacher = models.User.objects.get(account=user_account)
+#             name = request.POST.get('name', '').strip()
+#             course_class = request.POST.get('course_class', '').strip()
+#             year = request.POST.get('year', '')
+#             term = request.POST.get('term', '')
+#             mode = request.POST.get('mode', '')
+#             introduction = request.POST.get('introduction', '').strip()
+#
+#             # ==== 新增验证逻辑 ====
+#             # 1. 检查必填字段
+#             required_fields = {
+#                 '课程名称': name,
+#                 '教学班级': course_class,
+#                 '学年': year,
+#                 '学期': term,
+#                 '教学模式': mode
+#             }
+#
+#             missing_fields = [k for k, v in required_fields.items() if not v]
+#             if missing_fields:
+#                 error_msg = f"请填写以下必填字段：{', '.join(missing_fields)}"
+#                 raise ValueError(error_msg)
+#
+#             # 2. 类型转换验证
+#             try:
+#                 year = int(year)
+#                 term = int(term)
+#                 mode = int(mode)
+#             except ValueError:
+#                 error_msg = "选项值必须为数字"
+#                 raise
+#
+#             # 3. 选项范围验证
+#             valid_year_choices = {choice[0] for choice in models.Course.year_choices}
+#             if year not in valid_year_choices:
+#                 error_msg = f"无效的学年选择，有效值为：{', '.join(map(str, valid_year_choices))}"
+#                 raise ValueError(error_msg)
+#
+#             if term not in {1, 2, 3}:
+#                 error_msg = "学期必须为1、2或3"
+#                 raise ValueError(error_msg)
+#
+#             valid_mode_choices = {choice[0] for choice in models.Course.mode_choices}
+#             if mode not in valid_mode_choices:
+#                 error_msg = f"无效的教学模式，有效值为：{', '.join(map(str, valid_mode_choices))}"
+#                 raise ValueError(error_msg)
+#
+#             # ==== 创建课程 ====
+#             models.Course.objects.create(
+#                 name=name,
+#                 teacher=teacher,
+#                 course_class=course_class,
+#                 year=year,
+#                 term=term,
+#                 mode=mode,
+#                 introduction=introduction
+#             )
+#
+#             # 记录成功日志
+#             print(f"[SUCCESS] 课程创建成功：{name}")
+#             return redirect('teacher_main', user_account=user_account)
+#
+#         except Exception as e:
+#             # 错误处理
+#             if not error_msg:
+#                 error_msg = f"系统错误：{str(e)}"
+#             print(f"[ERROR] 课程创建失败：{error_msg}")
+#
+#     return render(request, 'create_course.html', {'error': error_msg})
 
 #根据用户身份的不同在统一界面渲染不同的东西 or 直接两个课程内容的界面 倾向后者
 def course_detail_student(request,course_id,user_account):

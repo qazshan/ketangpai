@@ -87,6 +87,10 @@ class Assignment(models.Model):
     )
     type = models.SmallIntegerField(choices=type_choices)
 
+    def get_status_display(self):
+        """返回作业状态的显示文本：进行中 或 已结束"""
+        return "已结束" if timezone.now() > self.due_date else "进行中"
+
 class Submission(models.Model):
     student = models.ForeignKey(to="app01.User", to_field="account", on_delete=models.CASCADE)
     assignment = models.ForeignKey(to="app01.Assignment", to_field="id", on_delete=models.CASCADE)
